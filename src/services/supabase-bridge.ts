@@ -30,15 +30,12 @@ export class SupabaseBridge {
    * デフォルトコマンドハンドラーを登録
    */
   private registerDefaultHandlers() {
-    // Difyインポートコマンド
+    // Difyインポートコマンド（未実装）
     this.registerCommand('dify-import', async (params) => {
       const { url, yamlPath } = params;
-      // DifyAutomationServiceを使用
-      const difyService = await import('./dify-automation');
-      const macro = difyService.generateImportMacro(url, yamlPath);
-      await difyService.saveMacro(macro, 'DifyImportFromAI');
-      // マクロを実行（UI.Vision APIを使用）
-      return { success: true, macroName: 'DifyImportFromAI' };
+      // TODO: Dify自動インポート機能を実装
+      console.warn('dify-import command not implemented yet');
+      return { success: false, message: 'Not implemented' };
     });
 
     // RPAマクロ実行コマンド
@@ -81,37 +78,79 @@ export class SupabaseBridge {
   }
 
   /**
-   * Realtimeチャネルに接続してコマンドを監視
-   * ポーリング方式（Realtime未対応の場合）
+   * Realtimeチャネルに接続してコマンドをリアルタイム監視
    */
   async connect() {
-    console.log('✅ Supabase Bridge connected (polling mode)');
-    
-    // 5秒ごとにpendingコマンドをポーリング
-    setInterval(async () => {
-      try {
-        const { data, error } = await this.supabase
-          .from('rpa_commands')
-          .select('*')
-          .eq('status', 'pending')
-          .order('created_at', { ascending: true })
-          .limit(10);
+    console.log('🔌 Connecting to Supabase Realtime...');
 
-        if (error) {
-          console.error('❌ Polling error:', error);
-          return;
-        }
+    // 既存のpendingコマンドを処理
+    await this.processPendingCommands();
 
-        if (data && data.length > 0) {
-          console.log(`📥 Found ${data.length} pending commands`);
-          for (const command of data) {
-            await this.handleCommand(command as CommandMessage);
-          }
+    // Realtimeチャネルを作成
+    this.channel = this.supabase
+      .channel('rpa_commands_channel')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'rpa_commands',
+          filter: 'status=eq.pending'
+        },
+        (payload) => {
+          console.log('📥 New command received:', payload);
+          this.handleCommand(payload.new as CommandMessage);
         }
-      } catch (err) {
-        console.error('❌ Polling exception:', err);
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'rpa_commands',
+          filter: 'status=eq.pending'
+        },
+        (payload) => {
+          console.log('🔄 Command updated to pending:', payload);
+          this.handleCommand(payload.new as CommandMessage);
+        }
+      )
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+          console.log('✅ Supabase Realtime connected');
+        } else if (status === 'CHANNEL_ERROR') {
+          console.error('❌ Realtime connection error');
+        } else if (status === 'TIMED_OUT') {
+          console.error('⏱️ Realtime connection timeout');
+        }
+      });
+  }
+
+  /**
+   * 既存のpendingコマンドを処理
+   */
+  private async processPendingCommands() {
+    try {
+      const { data, error } = await this.supabase
+        .from('rpa_commands')
+        .select('*')
+        .eq('status', 'pending')
+        .order('created_at', { ascending: true });
+
+      if (error) {
+        console.error('❌ Failed to fetch pending commands:', error);
+        return;
       }
-    }, 5000); // 5秒ごと
+
+      if (data && data.length > 0) {
+        console.log(`📋 Processing ${data.length} pending commands`);
+        for (const command of data) {
+          await this.handleCommand(command as CommandMessage);
+        }
+      }
+    } catch (err) {
+      console.error('❌ Exception in processPendingCommands:', err);
+    }
   }
 
   /**

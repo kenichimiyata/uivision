@@ -2262,3 +2262,8 @@ initProxyMan()
 getContextMenuService().destroyMenus()
 
 self.clip = clipboard
+
+// Initialize Supabase Realtime Bridge
+import('../supabase_init').catch(e => {
+  console.error('❌ Failed to initialize Supabase:', e)
+})
