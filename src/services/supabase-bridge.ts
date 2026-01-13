@@ -3,13 +3,17 @@
  * AI Agentと拡張機能間の通信ブリッジ
  */
 
-import { createClient, RealtimeChannel, SupabaseClient } from '@supabase/supabase-js';
+import {
+  createClient,
+  RealtimeChannel,
+  SupabaseClient,
+} from "@supabase/supabase-js";
 
 interface CommandMessage {
   id: string;
   command: string;
   params: any;
-  status: 'pending' | 'running' | 'completed' | 'failed';
+  status: "pending" | "running" | "completed" | "failed";
   result?: any;
   error?: string;
   created_at: string;
@@ -19,7 +23,8 @@ interface CommandMessage {
 export class SupabaseBridge {
   private supabase: SupabaseClient;
   private channel: RealtimeChannel | null = null;
-  private commandHandlers: Map<string, (params: any) => Promise<any>> = new Map();
+  private commandHandlers: Map<string, (params: any) => Promise<any>> =
+    new Map();
 
   constructor(url: string, anonKey: string) {
     this.supabase = createClient(url, anonKey);
@@ -31,20 +36,20 @@ export class SupabaseBridge {
    */
   private registerDefaultHandlers() {
     // Difyインポートコマンド（未実装）
-    this.registerCommand('dify-import', async (params) => {
+    this.registerCommand("dify-import", async (params) => {
       const { url, yamlPath } = params;
       // TODO: Dify自動インポート機能を実装
-      console.warn('dify-import command not implemented yet');
-      return { success: false, message: 'Not implemented' };
+      console.warn("dify-import command not implemented yet");
+      return { success: false, message: "Not implemented" };
     });
 
     // RPAマクロ実行コマンド
-    this.registerCommand('run-macro', async (params) => {
+    this.registerCommand("run-macro", async (params) => {
       const { macroName } = params;
       // chrome.runtime.sendMessageでマクロ実行を指示
       return new Promise((resolve, reject) => {
         chrome.runtime.sendMessage(
-          { cmd: 'playMacro', args: { name: macroName } },
+          { cmd: "playMacro", args: { name: macroName } },
           (response) => {
             if (response?.error) {
               reject(new Error(response.error));
@@ -57,9 +62,9 @@ export class SupabaseBridge {
     });
 
     // スクリーンショットコマンド
-    this.registerCommand('screenshot', async (params) => {
+    this.registerCommand("screenshot", async (params) => {
       return new Promise((resolve, reject) => {
-        chrome.tabs.captureVisibleTab(null, { format: 'png' }, (dataUrl) => {
+        chrome.tabs.captureVisibleTab(null, { format: "png" }, (dataUrl) => {
           if (chrome.runtime.lastError) {
             reject(new Error(chrome.runtime.lastError.message));
           } else {
@@ -81,47 +86,47 @@ export class SupabaseBridge {
    * Realtimeチャネルに接続してコマンドをリアルタイム監視
    */
   async connect() {
-    console.log('🔌 Connecting to Supabase Realtime...');
+    console.log("🔌 Connecting to Supabase Realtime...");
 
     // 既存のpendingコマンドを処理
     await this.processPendingCommands();
 
     // Realtimeチャネルを作成
     this.channel = this.supabase
-      .channel('rpa_commands_channel')
+      .channel("rpa_commands_channel")
       .on(
-        'postgres_changes',
+        "postgres_changes",
         {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'rpa_commands',
-          filter: 'status=eq.pending'
+          event: "INSERT",
+          schema: "public",
+          table: "rpa_commands",
+          filter: "status=eq.pending",
         },
         (payload) => {
-          console.log('📥 New command received:', payload);
+          console.log("📥 New command received:", payload);
           this.handleCommand(payload.new as CommandMessage);
         }
       )
       .on(
-        'postgres_changes',
+        "postgres_changes",
         {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'rpa_commands',
-          filter: 'status=eq.pending'
+          event: "UPDATE",
+          schema: "public",
+          table: "rpa_commands",
+          filter: "status=eq.pending",
         },
         (payload) => {
-          console.log('🔄 Command updated to pending:', payload);
+          console.log("🔄 Command updated to pending:", payload);
           this.handleCommand(payload.new as CommandMessage);
         }
       )
       .subscribe((status) => {
-        if (status === 'SUBSCRIBED') {
-          console.log('✅ Supabase Realtime connected');
-        } else if (status === 'CHANNEL_ERROR') {
-          console.error('❌ Realtime connection error');
-        } else if (status === 'TIMED_OUT') {
-          console.error('⏱️ Realtime connection timeout');
+        if (status === "SUBSCRIBED") {
+          console.log("✅ Supabase Realtime connected");
+        } else if (status === "CHANNEL_ERROR") {
+          console.error("❌ Realtime connection error");
+        } else if (status === "TIMED_OUT") {
+          console.error("⏱️ Realtime connection timeout");
         }
       });
   }
@@ -132,13 +137,13 @@ export class SupabaseBridge {
   private async processPendingCommands() {
     try {
       const { data, error } = await this.supabase
-        .from('rpa_commands')
-        .select('*')
-        .eq('status', 'pending')
-        .order('created_at', { ascending: true });
+        .from("rpa_commands")
+        .select("*")
+        .eq("status", "pending")
+        .order("created_at", { ascending: true });
 
       if (error) {
-        console.error('❌ Failed to fetch pending commands:', error);
+        console.error("❌ Failed to fetch pending commands:", error);
         return;
       }
 
@@ -149,7 +154,7 @@ export class SupabaseBridge {
         }
       }
     } catch (err) {
-      console.error('❌ Exception in processPendingCommands:', err);
+      console.error("❌ Exception in processPendingCommands:", err);
     }
   }
 
@@ -157,11 +162,11 @@ export class SupabaseBridge {
    * コマンドを実行
    */
   private async handleCommand(command: CommandMessage) {
-    console.log('📥 Received command:', command);
+    console.log("📥 Received command:", command);
 
     try {
       // ステータスを実行中に更新
-      await this.updateCommandStatus(command.id, 'running');
+      await this.updateCommandStatus(command.id, "running");
 
       const handler = this.commandHandlers.get(command.command);
       if (!handler) {
@@ -172,17 +177,17 @@ export class SupabaseBridge {
       const result = await handler(command.params);
 
       // 成功ステータスと結果を更新
-      await this.updateCommandStatus(command.id, 'completed', result);
-      console.log('✅ Command completed:', command.command);
+      await this.updateCommandStatus(command.id, "completed", result);
+      console.log("✅ Command completed:", command.command);
     } catch (error) {
       // エラーステータスを更新
       await this.updateCommandStatus(
         command.id,
-        'failed',
+        "failed",
         null,
         error instanceof Error ? error.message : String(error)
       );
-      console.error('❌ Command failed:', error);
+      console.error("❌ Command failed:", error);
     }
   }
 
@@ -191,22 +196,19 @@ export class SupabaseBridge {
    */
   private async updateCommandStatus(
     id: string,
-    status: CommandMessage['status'],
+    status: CommandMessage["status"],
     result?: any,
     error?: string
   ) {
     const updates: Partial<CommandMessage> = {
       status,
-      updated_at: new Date().toISOString()
+      updated_at: new Date().toISOString(),
     };
 
     if (result !== undefined) updates.result = result;
     if (error !== undefined) updates.error = error;
 
-    await this.supabase
-      .from('rpa_commands')
-      .update(updates)
-      .eq('id', id);
+    await this.supabase.from("rpa_commands").update(updates).eq("id", id);
   }
 
   /**
@@ -223,7 +225,10 @@ export class SupabaseBridge {
 // シングルトンインスタンス
 let bridgeInstance: SupabaseBridge | null = null;
 
-export function initSupabaseBridge(url: string, anonKey: string): SupabaseBridge {
+export function initSupabaseBridge(
+  url: string,
+  anonKey: string
+): SupabaseBridge {
   if (!bridgeInstance) {
     bridgeInstance = new SupabaseBridge(url, anonKey);
     bridgeInstance.connect();

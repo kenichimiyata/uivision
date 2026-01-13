@@ -1,18 +1,17 @@
 "use strict";
-(self["webpackChunkui_vision_web_extension"] = self["webpackChunkui_vision_web_extension"] || []).push([[901],{
+(self["webpackChunkui_vision_web_extension"] = self["webpackChunkui_vision_web_extension"] || []).push([[826],{
 
-/***/ 901:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ 99826:
+/***/ ((__unused_webpack_module, exports) => {
 
 
 
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.SupabaseBridge = void 0;
-exports.getSupabaseBridge = getSupabaseBridge;
-exports.initSupabaseBridge = initSupabaseBridge;
-var _supabaseJs = __webpack_require__(84515);
+exports.SupabaseWorkerClient = void 0;
+exports.getSupabaseWorker = getSupabaseWorker;
+exports.initSupabaseWorker = initSupabaseWorker;
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -25,39 +24,43 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); } /**
- * Supabase Realtime Bridge
- * AI Agentと拡張機能間の通信ブリッジ
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+/**
+ * Service Worker用のSupabase軽量クライアント
+ * documentを使わない実装
  */
-var SupabaseBridge = exports.SupabaseBridge = /*#__PURE__*/function () {
-  function SupabaseBridge(url, anonKey) {
-    _classCallCheck(this, SupabaseBridge);
-    _defineProperty(this, "channel", null);
+var SupabaseWorkerClient = exports.SupabaseWorkerClient = /*#__PURE__*/function () {
+  function SupabaseWorkerClient(url, key) {
+    _classCallCheck(this, SupabaseWorkerClient);
+    _defineProperty(this, "pollingInterval", null);
     _defineProperty(this, "commandHandlers", new Map());
-    this.supabase = (0, _supabaseJs.createClient)(url, anonKey);
+    this.supabaseUrl = url;
+    this.supabaseKey = key;
     this.registerDefaultHandlers();
   }
-
-  /**
-   * デフォルトコマンドハンドラーを登録
-   */
-  _createClass(SupabaseBridge, [{
+  _createClass(SupabaseWorkerClient, [{
     key: "registerDefaultHandlers",
     value: function registerDefaultHandlers() {
-      // Difyインポートコマンド（未実装）
-      this.registerCommand('dify-import', /*#__PURE__*/function () {
+      // スクリーンショットコマンド
+      this.registerCommand("screenshot", /*#__PURE__*/function () {
         var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(params) {
-          var url, yamlPath;
           return _regeneratorRuntime().wrap(function _callee$(_context) {
             while (1) switch (_context.prev = _context.next) {
               case 0:
-                url = params.url, yamlPath = params.yamlPath; // TODO: Dify自動インポート機能を実装
-                console.warn('dify-import command not implemented yet');
-                return _context.abrupt("return", {
-                  success: false,
-                  message: 'Not implemented'
-                });
-              case 3:
+                return _context.abrupt("return", new Promise(function (resolve, reject) {
+                  chrome.tabs.captureVisibleTab(null, {
+                    format: "png"
+                  }, function (dataUrl) {
+                    if (chrome.runtime.lastError) {
+                      reject(new Error(chrome.runtime.lastError.message));
+                    } else {
+                      resolve({
+                        dataUrl: (dataUrl === null || dataUrl === void 0 ? void 0 : dataUrl.substring(0, 100)) + "..."
+                      });
+                    }
+                  });
+                }));
+              case 1:
               case "end":
                 return _context.stop();
             }
@@ -69,16 +72,16 @@ var SupabaseBridge = exports.SupabaseBridge = /*#__PURE__*/function () {
       }());
 
       // RPAマクロ実行コマンド
-      this.registerCommand('run-macro', /*#__PURE__*/function () {
+      this.registerCommand("run-macro", /*#__PURE__*/function () {
         var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(params) {
           var macroName;
           return _regeneratorRuntime().wrap(function _callee2$(_context2) {
             while (1) switch (_context2.prev = _context2.next) {
               case 0:
-                macroName = params.macroName; // chrome.runtime.sendMessageでマクロ実行を指示
+                macroName = params.macroName;
                 return _context2.abrupt("return", new Promise(function (resolve, reject) {
                   chrome.runtime.sendMessage({
-                    cmd: 'playMacro',
+                    cmd: "playMacro",
                     args: {
                       name: macroName
                     }
@@ -100,90 +103,37 @@ var SupabaseBridge = exports.SupabaseBridge = /*#__PURE__*/function () {
           return _ref2.apply(this, arguments);
         };
       }());
-
-      // スクリーンショットコマンド
-      this.registerCommand('screenshot', /*#__PURE__*/function () {
-        var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(params) {
-          return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-            while (1) switch (_context3.prev = _context3.next) {
-              case 0:
-                return _context3.abrupt("return", new Promise(function (resolve, reject) {
-                  chrome.tabs.captureVisibleTab(null, {
-                    format: 'png'
-                  }, function (dataUrl) {
-                    if (chrome.runtime.lastError) {
-                      reject(new Error(chrome.runtime.lastError.message));
-                    } else {
-                      resolve({
-                        dataUrl: dataUrl
-                      });
-                    }
-                  });
-                }));
-              case 1:
-              case "end":
-                return _context3.stop();
-            }
-          }, _callee3);
-        }));
-        return function (_x3) {
-          return _ref3.apply(this, arguments);
-        };
-      }());
     }
-
-    /**
-     * カスタムコマンドハンドラーを登録
-     */
   }, {
     key: "registerCommand",
     value: function registerCommand(command, handler) {
       this.commandHandlers.set(command, handler);
     }
-
-    /**
-     * Realtimeチャネルに接続してコマンドをリアルタイム監視
-     */
   }, {
     key: "connect",
-    value: (function () {
+    value: function () {
       var _connect = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
         var _this = this;
         return _regeneratorRuntime().wrap(function _callee4$(_context4) {
           while (1) switch (_context4.prev = _context4.next) {
             case 0:
-              console.log('🔌 Connecting to Supabase Realtime...');
+              console.log("🔌 Starting Supabase polling (lightweight mode)...");
+              this.pollingInterval = setInterval( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+                return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+                  while (1) switch (_context3.prev = _context3.next) {
+                    case 0:
+                      _context3.next = 2;
+                      return _this.checkPendingCommands();
+                    case 2:
+                    case "end":
+                      return _context3.stop();
+                  }
+                }, _callee3);
+              })), 3000);
 
-              // 既存のpendingコマンドを処理
-              _context4.next = 3;
-              return this.processPendingCommands();
-            case 3:
-              // Realtimeチャネルを作成
-              this.channel = this.supabase.channel('rpa_commands_channel').on('postgres_changes', {
-                event: 'INSERT',
-                schema: 'public',
-                table: 'rpa_commands',
-                filter: 'status=eq.pending'
-              }, function (payload) {
-                console.log('📥 New command received:', payload);
-                _this.handleCommand(payload["new"]);
-              }).on('postgres_changes', {
-                event: 'UPDATE',
-                schema: 'public',
-                table: 'rpa_commands',
-                filter: 'status=eq.pending'
-              }, function (payload) {
-                console.log('🔄 Command updated to pending:', payload);
-                _this.handleCommand(payload["new"]);
-              }).subscribe(function (status) {
-                if (status === 'SUBSCRIBED') {
-                  console.log('✅ Supabase Realtime connected');
-                } else if (status === 'CHANNEL_ERROR') {
-                  console.error('❌ Realtime connection error');
-                } else if (status === 'TIMED_OUT') {
-                  console.error('⏱️ Realtime connection timeout');
-                }
-              });
+              // 初回実行
+              _context4.next = 4;
+              return this.checkPendingCommands();
             case 4:
             case "end":
               return _context4.stop();
@@ -195,98 +145,96 @@ var SupabaseBridge = exports.SupabaseBridge = /*#__PURE__*/function () {
       }
       return connect;
     }()
-    /**
-     * 既存のpendingコマンドを処理
-     */
-    )
   }, {
-    key: "processPendingCommands",
-    value: (function () {
-      var _processPendingCommands = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
-        var _yield$this$supabase$, data, error, _iterator, _step, command;
+    key: "checkPendingCommands",
+    value: function () {
+      var _checkPendingCommands = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+        var response, commands, _iterator, _step, command;
         return _regeneratorRuntime().wrap(function _callee5$(_context5) {
           while (1) switch (_context5.prev = _context5.next) {
             case 0:
               _context5.prev = 0;
               _context5.next = 3;
-              return this.supabase.from('rpa_commands').select('*').eq('status', 'pending').order('created_at', {
-                ascending: true
+              return fetch("".concat(this.supabaseUrl, "/rest/v1/rpa_commands?status=eq.pending&order=created_at.asc&limit=10"), {
+                headers: {
+                  apikey: this.supabaseKey,
+                  Authorization: "Bearer ".concat(this.supabaseKey),
+                  "Content-Type": "application/json"
+                }
               });
             case 3:
-              _yield$this$supabase$ = _context5.sent;
-              data = _yield$this$supabase$.data;
-              error = _yield$this$supabase$.error;
-              if (!error) {
-                _context5.next = 9;
+              response = _context5.sent;
+              if (response.ok) {
+                _context5.next = 7;
                 break;
               }
-              console.error('❌ Failed to fetch pending commands:', error);
+              console.error("❌ Polling error:", response.statusText);
               return _context5.abrupt("return");
+            case 7:
+              _context5.next = 9;
+              return response.json();
             case 9:
-              if (!(data && data.length > 0)) {
-                _context5.next = 28;
+              commands = _context5.sent;
+              if (!(commands && commands.length > 0)) {
+                _context5.next = 29;
                 break;
               }
-              console.log("\uD83D\uDCCB Processing ".concat(data.length, " pending commands"));
-              _iterator = _createForOfIteratorHelper(data);
-              _context5.prev = 12;
+              console.log("\uD83D\uDCE5 Found ".concat(commands.length, " pending commands"));
+              _iterator = _createForOfIteratorHelper(commands);
+              _context5.prev = 13;
               _iterator.s();
-            case 14:
+            case 15:
               if ((_step = _iterator.n()).done) {
-                _context5.next = 20;
+                _context5.next = 21;
                 break;
               }
               command = _step.value;
-              _context5.next = 18;
+              _context5.next = 19;
               return this.handleCommand(command);
-            case 18:
-              _context5.next = 14;
+            case 19:
+              _context5.next = 15;
               break;
-            case 20:
-              _context5.next = 25;
+            case 21:
+              _context5.next = 26;
               break;
-            case 22:
-              _context5.prev = 22;
-              _context5.t0 = _context5["catch"](12);
+            case 23:
+              _context5.prev = 23;
+              _context5.t0 = _context5["catch"](13);
               _iterator.e(_context5.t0);
-            case 25:
-              _context5.prev = 25;
+            case 26:
+              _context5.prev = 26;
               _iterator.f();
-              return _context5.finish(25);
-            case 28:
-              _context5.next = 33;
+              return _context5.finish(26);
+            case 29:
+              _context5.next = 34;
               break;
-            case 30:
-              _context5.prev = 30;
+            case 31:
+              _context5.prev = 31;
               _context5.t1 = _context5["catch"](0);
-              console.error('❌ Exception in processPendingCommands:', _context5.t1);
-            case 33:
+              console.error("❌ Polling exception:", _context5.t1);
+            case 34:
             case "end":
               return _context5.stop();
           }
-        }, _callee5, this, [[0, 30], [12, 22, 25, 28]]);
+        }, _callee5, this, [[0, 31], [13, 23, 26, 29]]);
       }));
-      function processPendingCommands() {
-        return _processPendingCommands.apply(this, arguments);
+      function checkPendingCommands() {
+        return _checkPendingCommands.apply(this, arguments);
       }
-      return processPendingCommands;
+      return checkPendingCommands;
     }()
-    /**
-     * コマンドを実行
-     */
-    )
   }, {
     key: "handleCommand",
-    value: (function () {
+    value: function () {
       var _handleCommand = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(command) {
         var handler, result;
         return _regeneratorRuntime().wrap(function _callee6$(_context6) {
           while (1) switch (_context6.prev = _context6.next) {
             case 0:
-              console.log('📥 Received command:', command);
+              console.log("📥 Processing command:", command.command);
               _context6.prev = 1;
               _context6.next = 4;
-              return this.updateCommandStatus(command.id, 'running');
+              return this.updateCommandStatus(command.id, "running");
             case 4:
               handler = this.commandHandlers.get(command.command);
               if (handler) {
@@ -300,36 +248,32 @@ var SupabaseBridge = exports.SupabaseBridge = /*#__PURE__*/function () {
             case 9:
               result = _context6.sent;
               _context6.next = 12;
-              return this.updateCommandStatus(command.id, 'completed', result);
+              return this.updateCommandStatus(command.id, "completed", result);
             case 12:
-              console.log('✅ Command completed:', command.command);
+              console.log("✅ Command completed:", command.command);
               _context6.next = 20;
               break;
             case 15:
               _context6.prev = 15;
               _context6.t0 = _context6["catch"](1);
               _context6.next = 19;
-              return this.updateCommandStatus(command.id, 'failed', null, _context6.t0 instanceof Error ? _context6.t0.message : String(_context6.t0));
+              return this.updateCommandStatus(command.id, "failed", null, _context6.t0 instanceof Error ? _context6.t0.message : String(_context6.t0));
             case 19:
-              console.error('❌ Command failed:', _context6.t0);
+              console.error("❌ Command failed:", _context6.t0);
             case 20:
             case "end":
               return _context6.stop();
           }
         }, _callee6, this, [[1, 15]]);
       }));
-      function handleCommand(_x4) {
+      function handleCommand(_x3) {
         return _handleCommand.apply(this, arguments);
       }
       return handleCommand;
     }()
-    /**
-     * コマンドステータスを更新
-     */
-    )
   }, {
     key: "updateCommandStatus",
-    value: (function () {
+    value: function () {
       var _updateCommandStatus = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(id, status, result, error) {
         var updates;
         return _regeneratorRuntime().wrap(function _callee7$(_context7) {
@@ -342,61 +286,49 @@ var SupabaseBridge = exports.SupabaseBridge = /*#__PURE__*/function () {
               if (result !== undefined) updates.result = result;
               if (error !== undefined) updates.error = error;
               _context7.next = 5;
-              return this.supabase.from('rpa_commands').update(updates).eq('id', id);
+              return fetch("".concat(this.supabaseUrl, "/rest/v1/rpa_commands?id=eq.").concat(id), {
+                method: "PATCH",
+                headers: {
+                  apikey: this.supabaseKey,
+                  Authorization: "Bearer ".concat(this.supabaseKey),
+                  "Content-Type": "application/json",
+                  Prefer: "return=minimal"
+                },
+                body: JSON.stringify(updates)
+              });
             case 5:
             case "end":
               return _context7.stop();
           }
         }, _callee7, this);
       }));
-      function updateCommandStatus(_x5, _x6, _x7, _x8) {
+      function updateCommandStatus(_x4, _x5, _x6, _x7) {
         return _updateCommandStatus.apply(this, arguments);
       }
       return updateCommandStatus;
     }()
-    /**
-     * 切断
-     */
-    )
   }, {
     key: "disconnect",
-    value: (function () {
-      var _disconnect = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
-        return _regeneratorRuntime().wrap(function _callee8$(_context8) {
-          while (1) switch (_context8.prev = _context8.next) {
-            case 0:
-              if (!this.channel) {
-                _context8.next = 4;
-                break;
-              }
-              _context8.next = 3;
-              return this.channel.unsubscribe();
-            case 3:
-              this.channel = null;
-            case 4:
-            case "end":
-              return _context8.stop();
-          }
-        }, _callee8, this);
-      }));
-      function disconnect() {
-        return _disconnect.apply(this, arguments);
+    value: function disconnect() {
+      if (this.pollingInterval) {
+        clearInterval(this.pollingInterval);
+        this.pollingInterval = null;
       }
-      return disconnect;
-    }())
+    }
   }]);
-  return SupabaseBridge;
+  return SupabaseWorkerClient;
 }(); // シングルトンインスタンス
-var bridgeInstance = null;
-function initSupabaseBridge(url, anonKey) {
-  if (!bridgeInstance) {
-    bridgeInstance = new SupabaseBridge(url, anonKey);
-    bridgeInstance.connect();
+var clientInstance = null;
+function initSupabaseWorker(url, key) {
+  if (!clientInstance) {
+    clientInstance = new SupabaseWorkerClient(url, key);
+    clientInstance.connect();
+    console.log("✅ Supabase Worker Client initialized");
   }
-  return bridgeInstance;
+  return clientInstance;
 }
-function getSupabaseBridge() {
-  return bridgeInstance;
+function getSupabaseWorker() {
+  return clientInstance;
 }
 
 /***/ })

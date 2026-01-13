@@ -21294,36 +21294,6 @@ function parseJson(string, reviver, fileName) {
 /******/ 	__webpack_require__.m = __webpack_modules__;
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/create fake namespace object */
-/******/ 	(() => {
-/******/ 		var getProto = Object.getPrototypeOf ? (obj) => (Object.getPrototypeOf(obj)) : (obj) => (obj.__proto__);
-/******/ 		var leafPrototypes;
-/******/ 		// create a fake namespace object
-/******/ 		// mode & 1: value is a module id, require it
-/******/ 		// mode & 2: merge all properties of value into the ns
-/******/ 		// mode & 4: return value when already ns object
-/******/ 		// mode & 16: return value when it's Promise-like
-/******/ 		// mode & 8|1: behave like require
-/******/ 		__webpack_require__.t = function(value, mode) {
-/******/ 			if(mode & 1) value = this(value);
-/******/ 			if(mode & 8) return value;
-/******/ 			if(typeof value === 'object' && value) {
-/******/ 				if((mode & 4) && value.__esModule) return value;
-/******/ 				if((mode & 16) && typeof value.then === 'function') return value;
-/******/ 			}
-/******/ 			var ns = Object.create(null);
-/******/ 			__webpack_require__.r(ns);
-/******/ 			var def = {};
-/******/ 			leafPrototypes = leafPrototypes || [null, getProto({}), getProto([]), getProto(getProto)];
-/******/ 			for(var current = mode & 2 && value; typeof current == 'object' && !~leafPrototypes.indexOf(current); current = getProto(current)) {
-/******/ 				Object.getOwnPropertyNames(current).forEach((key) => (def[key] = () => (value[key])));
-/******/ 			}
-/******/ 			def['default'] = () => (value);
-/******/ 			__webpack_require__.d(ns, def);
-/******/ 			return ns;
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -21564,31 +21534,31 @@ var __webpack_exports__ = {};
 
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-var _web_extension = _interopRequireDefault(__webpack_require__(41953));
-var _utils = __webpack_require__(46580);
-var _ipc_bg_cs = __webpack_require__(59711);
-var C = _interopRequireWildcard(__webpack_require__(95902));
-var _log = _interopRequireDefault(__webpack_require__(89130));
+var _intercept_log = _interopRequireDefault(__webpack_require__(36447));
+var _sidepanel = __webpack_require__(17767);
 var _clipboard = _interopRequireDefault(__webpack_require__(92642));
-var _storage = _interopRequireDefault(__webpack_require__(88555));
+var C = _interopRequireWildcard(__webpack_require__(95902));
 var _debugger = __webpack_require__(80978);
 var _download_man = __webpack_require__(54138);
-var _config = _interopRequireDefault(__webpack_require__(8747));
-var _storage2 = __webpack_require__(97467);
-var _xfile = __webpack_require__(63109);
-var _resize_window = __webpack_require__(55720);
+var _ipc_bg_cs = __webpack_require__(59711);
 var _ipc_cache = __webpack_require__(75866);
+var _log = _interopRequireDefault(__webpack_require__(89130));
+var _resize_window = __webpack_require__(55720);
+var _storage = _interopRequireDefault(__webpack_require__(88555));
 var _tab_utils = __webpack_require__(20041);
+var _ts_utils = __webpack_require__(1601);
+var _utils = __webpack_require__(46580);
+var _web_extension = _interopRequireDefault(__webpack_require__(41953));
+var _config = _interopRequireDefault(__webpack_require__(8747));
 var _service = __webpack_require__(40987);
 var _types = __webpack_require__(76701);
-var _ts_utils = __webpack_require__(1601);
-var _proxy = __webpack_require__(44790);
-var _log2 = __webpack_require__(26480);
 var _contextMenu = __webpack_require__(54490);
+var _log2 = __webpack_require__(26480);
+var _proxy = __webpack_require__(44790);
+var _storage2 = __webpack_require__(97467);
+var _xfile = __webpack_require__(63109);
 var _global_state = __webpack_require__(8327);
 var _tab = __webpack_require__(13755);
-var _sidepanel = __webpack_require__(17767);
-var _intercept_log = _interopRequireDefault(__webpack_require__(36447));
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && Object.prototype.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -21703,15 +21673,15 @@ var getToplayTabId = /*#__PURE__*/function () {
     return _ref3.apply(this, arguments);
   };
 }();
-var getRecordTabIpc = (0, _tab.genGetTabIpc)('toRecord', 'recording');
-var getPlayTabIpc = (0, _tab.genGetTabIpc)('toPlay', 'playing commands');
-var getInspectTabIpc = (0, _tab.genGetTabIpc)('toInspect', 'inspect');
-var getPanelTabIpc = (0, _tab.genGetTabIpc)('panel', 'dashboard');
+var getRecordTabIpc = (0, _tab.genGetTabIpc)("toRecord", "recording");
+var getPlayTabIpc = (0, _tab.genGetTabIpc)("toPlay", "playing commands");
+var getInspectTabIpc = (0, _tab.genGetTabIpc)("toInspect", "inspect");
+var getPanelTabIpc = (0, _tab.genGetTabIpc)("panel", "dashboard");
 var showBadge = function showBadge(options) {
   var _clear$text$color$bli = _objectSpread({
       clear: false,
-      text: '',
-      color: '#ff0000',
+      text: "",
+      color: "#ff0000",
       blink: 0
     }, options || {}),
     clear = _clear$text$color$bli.clear,
@@ -21720,7 +21690,7 @@ var showBadge = function showBadge(options) {
     blink = _clear$text$color$bli.blink;
   if (clear) {
     return _web_extension["default"].action.setBadgeText({
-      text: ''
+      text: ""
     });
   }
   _web_extension["default"].action.setBadgeBackgroundColor({
@@ -21734,7 +21704,7 @@ var showBadge = function showBadge(options) {
       _web_extension["default"].action.getBadgeText({}).then(function (curText) {
         if (curText !== text) return false;
         return _web_extension["default"].action.setBadgeText({
-          text: ''
+          text: ""
         });
       });
     }, blink);
@@ -21743,45 +21713,45 @@ var showBadge = function showBadge(options) {
 };
 var toggleRecordingBadge = function toggleRecordingBadge(isRecording, options) {
   return showBadge(_objectSpread(_objectSpread({
-    color: '#ff0000',
-    text: 'R'
+    color: "#ff0000",
+    text: "R"
   }, options || {}), {}, {
     clear: !isRecording
   }));
 };
 var toggleInspectingBadge = function toggleInspectingBadge(isInspecting, options) {
   return showBadge(_objectSpread(_objectSpread({
-    color: '#ffa800',
-    text: 'S'
+    color: "#ffa800",
+    text: "S"
   }, options || {}), {}, {
     clear: !isInspecting
   }));
 };
 var togglePlayingBadge = function togglePlayingBadge(isPlaying, options) {
   return showBadge(_objectSpread(_objectSpread({
-    color: '#14c756',
-    text: 'P'
+    color: "#14c756",
+    text: "P"
   }, options || {}), {}, {
     clear: !isPlaying
   }));
 };
 var isUpgradeViewed = function isUpgradeViewed() {
-  return _web_extension["default"].storage.local.get('upgrade_not_viewed').then(function (obj) {
-    return obj['upgrade_not_viewed'] !== 'not_viewed';
+  return _web_extension["default"].storage.local.get("upgrade_not_viewed").then(function (obj) {
+    return obj["upgrade_not_viewed"] !== "not_viewed";
   });
 };
 var notifyRecordCommand = function notifyRecordCommand(command) {
   var notifId = (0, _utils.uid)();
   _web_extension["default"].notifications.create(notifId, {
-    type: 'basic',
-    iconUrl: './logo.png',
-    title: 'Record command!',
+    type: "basic",
+    iconUrl: "./logo.png",
+    title: "Record command!",
     message: function () {
       var list = [];
       list.push("command: ".concat(command.cmd));
       if (command.target) list.push("target: ".concat(command.target));
       if (command.value) list.push("value: ".concat(command.value));
-      return list.join('\n');
+      return list.join("\n");
     }()
   });
 
@@ -21794,25 +21764,25 @@ var notifyRecordCommand = function notifyRecordCommand(command) {
 };
 var notifyAutoPause = function notifyAutoPause() {
   _web_extension["default"].notifications.create({
-    type: 'basic',
-    iconUrl: './logo.png',
-    title: 'Replay paused!',
-    message: 'Auto paused by command'
+    type: "basic",
+    iconUrl: "./logo.png",
+    title: "Replay paused!",
+    message: "Auto paused by command"
   });
 };
 var notifyBreakpoint = function notifyBreakpoint() {
   _web_extension["default"].notifications.create({
-    type: 'basic',
-    iconUrl: './logo.png',
-    title: 'Replay paused!',
-    message: 'Auto paused by breakpoint'
+    type: "basic",
+    iconUrl: "./logo.png",
+    title: "Replay paused!",
+    message: "Auto paused by breakpoint"
   });
 };
 var notifyEcho = function notifyEcho(text) {
   _web_extension["default"].notifications.create({
-    type: 'basic',
-    iconUrl: './logo.png',
-    title: 'Echo',
+    type: "basic",
+    iconUrl: "./logo.png",
+    title: "Echo",
     message: text
   });
 };
@@ -21824,7 +21794,7 @@ var closeAllWindows = function closeAllWindows() {
   });
 };
 var isTimeToBackup = function isTimeToBackup() {
-  return _storage["default"].get('config').then(function (config) {
+  return _storage["default"].get("config").then(function (config) {
     var enableAutoBackup = config.enableAutoBackup,
       lastBackupActionTime = config.lastBackupActionTime,
       autoBackupInterval = config.autoBackupInterval;
@@ -21849,13 +21819,13 @@ var notifyPanelAboutActiveTab = function notifyPanelAboutActiveTab(activeTabId) 
       tab = _tuple[0],
       panelIpc = _tuple[1];
     if (!panelIpc) return;
-    if (tab.url.indexOf(_web_extension["default"].runtime.getURL('')) !== -1) return;
+    if (tab.url.indexOf(_web_extension["default"].runtime.getURL("")) !== -1) return;
     if (!tab.title || tab.title.trim().length === 0) {
       return (0, _utils.delay)(function () {
         return notifyPanelAboutActiveTab(activeTabId);
       }, 200);
     }
-    return panelIpc.ask('UPDATE_ACTIVE_TAB', {
+    return panelIpc.ask("UPDATE_ACTIVE_TAB", {
       url: tab.url,
       title: tab.title
     });
@@ -21890,7 +21860,7 @@ var getStorageManagerForBg = (0, _ts_utils.singletonGetterByKey)(function (mode)
 });
 var getCurrentStorageManager = function getCurrentStorageManager() {
   var restoreConfig = function restoreConfig() {
-    return _storage["default"].get('config');
+    return _storage["default"].get("config");
   };
   return Promise.all([restoreConfig(), (0, _xfile.getXFile)().getConfig()]).then(function (_ref7) {
     var _ref8 = _slicedToArray(_ref7, 2),
@@ -21905,12 +21875,12 @@ var getLogServiceForBg = (0, _ts_utils.singletonGetter)(function () {
   });
 });
 function logKantuClosing() {
-  return getLogServiceForBg().logWithTime('Ui.Vision closing');
+  return getLogServiceForBg().logWithTime("Ui.Vision closing");
 }
 var closeSidePanel = function closeSidePanel() {
   if (_web_extension["default"].isFirefox()) {
     _web_extension["default"].sidebarAction.close().then(function () {
-      // debugger; 
+      // debugger;
     });
   } else {
     return _web_extension["default"].sidePanel.setOptions({
@@ -21936,15 +21906,15 @@ var bindEvents = function bindEvents() {
             return (0, _tab.showPanelWindow)().then(function (isWindowCreated) {
               if (isWindowCreated) {
                 getLogServiceForBg().updateLogFileName();
-                getLogServiceForBg().logWithTime('Ui.Vision started');
+                getLogServiceForBg().logWithTime("Ui.Vision started");
               }
             });
           } else {
             _web_extension["default"].action.setBadgeText({
-              text: ''
+              text: ""
             });
             _web_extension["default"].storage.local.set({
-              upgrade_not_viewed: ''
+              upgrade_not_viewed: ""
             });
             return _web_extension["default"].tabs.create({
               url: _config["default"].urlAfterUpgrade
@@ -21981,15 +21951,15 @@ var bindEvents = function bindEvents() {
             return (0, _tab.showPanelWindow)().then(function (isWindowCreated) {
               if (isWindowCreated) {
                 getLogServiceForBg().updateLogFileName();
-                getLogServiceForBg().logWithTime('Ui.Vision started');
+                getLogServiceForBg().logWithTime("Ui.Vision started");
               }
             });
           } else {
             _web_extension["default"].action.setBadgeText({
-              text: ''
+              text: ""
             });
             _web_extension["default"].storage.local.set({
-              upgrade_not_viewed: ''
+              upgrade_not_viewed: ""
             });
             return _web_extension["default"].tabs.create({
               url: _config["default"].urlAfterUpgrade
@@ -22033,7 +22003,7 @@ var bindEvents = function bindEvents() {
               return pActiveTab.then(function (tab) {
                 if (tab && tab.id) {
                   // This is the main purpose for this callback: Update tabIds.toPlay to new active tab
-                  (0, _global_state.updateState)((0, _utils.setIn)(['tabIds', 'toPlay'], tab.id));
+                  (0, _global_state.updateState)((0, _utils.setIn)(["tabIds", "toPlay"], tab.id));
                 }
               });
             }));
@@ -22085,8 +22055,8 @@ var bindEvents = function bindEvents() {
     _storage["default"].addListener(function (_ref10) {
       var _ref11 = _slicedToArray(_ref10, 1),
         storage = _ref11[0];
-      if (storage.key === 'config') {
-        console.log('config changed:>> ', storage);
+      if (storage.key === "config") {
+        console.log("config changed:>> ", storage);
         if (storage.newValue.oneTimeShowSidePanel !== storage.oldValue.oneTimeShowSidePanel && [true, false].includes(storage.newValue.oneTimeShowSidePanel)) {
           showSidePanel = storage.newValue.oneTimeShowSidePanel;
         } else {
@@ -22110,7 +22080,7 @@ var bindEvents = function bindEvents() {
       return _regeneratorRuntime().wrap(function _callee6$(_context6) {
         while (1) switch (_context6.prev = _context6.next) {
           case 0:
-            return _context6.abrupt("return", _storage["default"].get('config').then(function (config) {
+            return _context6.abrupt("return", _storage["default"].get("config").then(function (config) {
               // because we cannot read this storage value between user clicking extension icon and calling Ext.sidePanel.open
               showSidePanel = getCalculatedShowSidePanelValue(config); // config && config.showSidePanel
               if (showSidePanel && !keepAliveInterval) {
@@ -22140,9 +22110,9 @@ var bindEvents = function bindEvents() {
     }).then(function (tabs) {
       if (tabs.length === 0) return;
       (0, _ipc_cache.getIpcCache)().get(tabs[0].id, 100).then(function (ipc) {
-        return ipc.ask('TAB_ACTIVATED', {});
+        return ipc.ask("TAB_ACTIVATED", {});
       }, function (e) {
-        return 'Comment: ignore this error';
+        return "Comment: ignore this error";
       });
     });
   });
@@ -22176,7 +22146,7 @@ var bindEvents = function bindEvents() {
             (0, _sidepanel.checkIfSidePanelOpen)().then(function (isOpen) {
               isSidePanelOpen = isOpen;
             });
-            if (!(activeInfo.tabId === state.tabIds.panel || tab.url.indexOf(_web_extension["default"].runtime.getURL('')) !== -1)) {
+            if (!(activeInfo.tabId === state.tabIds.panel || tab.url.indexOf(_web_extension["default"].runtime.getURL("")) !== -1)) {
               _context9.next = 10;
               break;
             }
@@ -22194,9 +22164,9 @@ var bindEvents = function bindEvents() {
             });
           case 12:
             (0, _ipc_cache.getIpcCache)().get(activeInfo.tabId, 100).then(function (ipc) {
-              return ipc.ask('TAB_ACTIVATED', {});
+              return ipc.ask("TAB_ACTIVATED", {});
             }, function (e) {
-              return 'Comment: ingore this error';
+              return "Comment: ingore this error";
             });
             notifyPanelAboutActiveTab(activeInfo.tabId);
             _context9.t0 = state.status;
@@ -22211,9 +22181,9 @@ var bindEvents = function bindEvents() {
           case 19:
             updateTabIds = function updateTabIds() {
               _web_extension["default"].tabs.get(activeInfo.tabId).then(function (tab) {
-                if (tab.url.indexOf(_web_extension["default"].runtime.getURL('')) !== -1) return;
+                if (tab.url.indexOf(_web_extension["default"].runtime.getURL("")) !== -1) return;
                 if (activeInfo.tabId === state.tabIds.panel) return;
-                (0, _log["default"])('in tab activated, set toPlay to ', activeInfo);
+                (0, _log["default"])("in tab activated, set toPlay to ", activeInfo);
                 return (0, _global_state.updateState)(function (state) {
                   return _objectSpread(_objectSpread({}, state), {}, {
                     tabIds: _objectSpread(_objectSpread({}, state.tabIds), {}, {
@@ -22246,14 +22216,14 @@ var bindEvents = function bindEvents() {
                 return ipc;
               }, 2000);
             }).then(function (ipc) {
-              return ipc.ask('SET_STATUS', {
+              return ipc.ask("SET_STATUS", {
                 status: C.CONTENT_SCRIPT_STATUS.RECORDING
               });
             }).then(function () {
               // Note: set the original tab to NORMAL status
               // only if the new tab is set to RECORDING status
               return getRecordTabIpc().then(function (ipc) {
-                ipc.ask('SET_STATUS', {
+                ipc.ask("SET_STATUS", {
                   status: C.CONTENT_SCRIPT_STATUS.NORMAL
                 });
               });
@@ -22272,7 +22242,7 @@ var bindEvents = function bindEvents() {
                         _ref17 = _slicedToArray(_ref15, 2), oldTab = _ref17[0], newTab = _ref17[1];
                         result = []; // update recording tab
                         _context8.next = 4;
-                        return (0, _global_state.updateState)((0, _utils.setIn)(['tabIds', 'toRecord'], activeInfo.tabId));
+                        return (0, _global_state.updateState)((0, _utils.setIn)(["tabIds", "toRecord"], activeInfo.tabId));
                       case 4:
                         if (oldTab.windowId === newTab.windowId) {
                           result.push("tab=".concat(newTab.index - oldTab.index));
@@ -22295,10 +22265,10 @@ var bindEvents = function bindEvents() {
             }).then(function (data) {
               // Note: commit the `selectWindow` command
               var command = _objectSpread({
-                cmd: 'selectWindow'
+                cmd: "selectWindow"
               }, data);
               return getPanelTabIpc().then(function (panelIpc) {
-                return panelIpc.ask('RECORD_ADD_COMMAND', command);
+                return panelIpc.ask("RECORD_ADD_COMMAND", command);
               }).then(function (shouldNotify) {
                 if (shouldNotify) {
                   notifyRecordCommand(command);
@@ -22320,13 +22290,13 @@ var bindEvents = function bindEvents() {
   }());
   _web_extension["default"].runtime.onConnect.addListener(function (port) {
     if (port.name === _ipc_bg_cs.SIDEPANEL_PORT_NAME) {
-      console.log('side panel connected');
+      console.log("side panel connected");
       isSidePanelOpen = true;
       port.onDisconnect.addListener( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10() {
         return _regeneratorRuntime().wrap(function _callee10$(_context10) {
           while (1) switch (_context10.prev = _context10.next) {
             case 0:
-              console.log('side panel disconnected');
+              console.log("side panel disconnected");
               isSidePanelOpen = false;
             case 2:
             case "end":
@@ -22346,10 +22316,10 @@ var bindEvents = function bindEvents() {
   //   const item = downloadMan.findById(downloadId)
   //   if (!item){
   //     getPanelTabIpc().then(panelIpc => {
-  //       panelIpc.ask('DOWNLOAD_COMPLETE', downloadItem) 
+  //       panelIpc.ask('DOWNLOAD_COMPLETE', downloadItem)
   //     })
   //     return
-  //   } 
+  //   }
 
   //   const tmpName   = item.fileName.trim()
   //   const fileName  = tmpName === '' || tmpName === '*' ? null : tmpName
@@ -22357,7 +22327,7 @@ var bindEvents = function bindEvents() {
   //   var downloadItem={filename:fileName}
 
   //   getPanelTabIpc().then(panelIpc => {
-  //     panelIpc.ask('DOWNLOAD_COMPLETE', downloadItem) 
+  //     panelIpc.ask('DOWNLOAD_COMPLETE', downloadItem)
   //   })
 
   //   if (fileName) {
@@ -22387,7 +22357,7 @@ var bindEvents = function bindEvents() {
   //   }
 
   //   getPanelTabIpc().then(panelIpc => {
-  //     panelIpc.ask('DOWNLOAD_COMPLETE', downloadItem) 
+  //     panelIpc.ask('DOWNLOAD_COMPLETE', downloadItem)
   //   })
   // });
 
@@ -22404,10 +22374,10 @@ var bindEvents = function bindEvents() {
               var downloadItem = {
                 filename: downloadItems[0].filename
               };
-              panelIpc.ask('DOWNLOAD_COMPLETE', downloadItem);
+              panelIpc.ask("DOWNLOAD_COMPLETE", downloadItem);
             }
           });
-          _storage["default"].get('config').then( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11() {
+          _storage["default"].get("config").then( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11() {
             var config,
               state,
               _args11 = arguments;
@@ -22477,7 +22447,7 @@ var setInspectorTabId = /*#__PURE__*/function () {
           return _context12.abrupt("return", Promise.resolve(true));
         case 10:
           return _context12.abrupt("return", (0, _ipc_cache.getIpcCache)().get(lastInspect).then(function (ipc) {
-            return ipc.ask('STOP_INSPECTING');
+            return ipc.ask("STOP_INSPECTING");
           })["catch"](function (e) {
             return (0, _log["default"])(e.stack);
           }));
@@ -22494,7 +22464,7 @@ var setInspectorTabId = /*#__PURE__*/function () {
   };
 }();
 var startSendingTimeoutStatus = function startSendingTimeoutStatus(timeout) {
-  var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'wait';
+  var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "wait";
   var timer;
   var p = (0, _global_state.getState)().then(function (state) {
     var past = 0;
@@ -22502,7 +22472,7 @@ var startSendingTimeoutStatus = function startSendingTimeoutStatus(timeout) {
     timer = setInterval(function () {
       past += 1000;
       getPanelTabIpc().then(function (panelIpc) {
-        panelIpc.ask('TIMEOUT_STATUS', {
+        panelIpc.ask("TIMEOUT_STATUS", {
           type: type,
           past: past,
           total: timeout
@@ -22523,8 +22493,8 @@ var startSendingTimeoutStatus = function startSendingTimeoutStatus(timeout) {
   };
 };
 var pacListener = function pacListener(data) {
-  if (data.type === 'PROXY_LOG') {
-    (0, _log["default"])('PROXY_LOG', data);
+  if (data.type === "PROXY_LOG") {
+    (0, _log["default"])("PROXY_LOG", data);
   }
 };
 
@@ -22542,11 +22512,11 @@ var onRequest = /*#__PURE__*/function () {
           return (0, _global_state.getState)();
         case 2:
           state = _context22.sent;
-          if (cmd !== 'CS_ACTIVATE_ME' && cmd !== 'TIMEOUT') {
-            (0, _log["default"])('onAsk', cmd, args);
+          if (cmd !== "CS_ACTIVATE_ME" && cmd !== "TIMEOUT") {
+            (0, _log["default"])("onAsk", cmd, args);
           }
           _context22.t0 = cmd;
-          _context22.next = _context22.t0 === 'I_AM_PANEL' ? 7 : _context22.t0 === 'PANEL_CAPTURE_VISIBLE_TAB' ? 19 : _context22.t0 === 'PANEL_SET_PROXY' ? 20 : _context22.t0 === 'PANEL_GET_PROXY' ? 21 : _context22.t0 === 'PANEL_TIME_FOR_BACKUP' ? 22 : _context22.t0 === 'PANEL_LOG' ? 23 : _context22.t0 === 'PANEL_CALL_PLAY_TAB' ? 24 : _context22.t0 === 'PANEL_CS_IPC_READY' ? 26 : _context22.t0 === 'PANEL_HAS_PENDING_DOWNLOAD' ? 28 : _context22.t0 === 'PANEL_WAIT_FOR_ANY_DOWNLOAD' ? 29 : _context22.t0 === 'PANEL_START_RECORDING' ? 30 : _context22.t0 === 'PANEL_STOP_RECORDING' ? 41 : _context22.t0 === 'PANEL_TRY_TO_RECORD_OPEN_COMMAND' ? 48 : _context22.t0 === 'PANEL_START_INSPECTING' ? 51 : _context22.t0 === 'PANEL_STOP_INSPECTING' ? 57 : _context22.t0 === 'PANEL_START_PLAYING' ? 62 : _context22.t0 === 'PANEL_HEART_BEAT' ? 72 : _context22.t0 === 'PANEL_STOP_PLAYING' ? 73 : _context22.t0 === 'PANEL_HIGHLIGHT_DOM' ? 80 : _context22.t0 === 'PANEL_HIGHLIGHT_RECT' ? 81 : _context22.t0 === 'PANEL_HIGHLIGHT_X' ? 82 : _context22.t0 === 'PANEL_HIGHLIGHT_RECTS' ? 83 : _context22.t0 === 'PANEL_HIGHLIGHT_DESKTOP_RECTS' ? 85 : _context22.t0 === 'PANEL_HIGHLIGHT_DESKTOP_X' ? 86 : _context22.t0 === 'PANEL_HIGHLIGHT_OCR_MATCHES' ? 87 : _context22.t0 === 'PANEL_CLEAR_OCR_MATCHES_ON_PLAYING_PAGE' ? 92 : _context22.t0 === 'PANEL_RESIZE_WINDOW' ? 93 : _context22.t0 === 'PANEL_UPDATE_BADGE' ? 96 : _context22.t0 === 'PANEL_NOTIFY_AUTO_PAUSE' ? 101 : _context22.t0 === 'PANEL_NOTIFY_BREAKPOINT' ? 103 : _context22.t0 === 'PANEL_NOTIFY_ECHO' ? 105 : _context22.t0 === 'PANEL_CLOSE_ALL_WINDOWS' ? 107 : _context22.t0 === 'PANEL_CURRENT_PLAY_TAB_INFO' ? 110 : _context22.t0 === 'PANEL_MINIMIZE_ALL_WINDOWS_BUT_PANEL' ? 111 : _context22.t0 === 'PANEL_MINIMIZE_ALL_WINDOWS' ? 114 : _context22.t0 === 'PANEL_BRING_PANEL_TO_FOREGROUND' ? 115 : _context22.t0 === 'PANEL_BRING_PLAYING_WINDOW_TO_FOREGROUND' ? 116 : _context22.t0 === 'PANEL_RESIZE_PLAY_TAB' ? 117 : _context22.t0 === 'PANEL_GET_WINDOW_SIZE_OF_PLAY_TAB' ? 118 : _context22.t0 === 'PANEL_SELECT_AREA_ON_CURRENT_PAGE' ? 119 : _context22.t0 === 'PANEL_CLEAR_VISION_RECTS_ON_PLAYING_PAGE' ? 120 : _context22.t0 === 'PANEL_HIDE_VISION_HIGHLIGHT' ? 121 : _context22.t0 === 'PANEL_SHOW_VISION_HIGHLIGHT' ? 122 : _context22.t0 === 'PANEL_SCREENSHOT_PAGE_INFO' ? 123 : _context22.t0 === 'PANEL_TOGGLE_HIGHLIGHT_VIEWPORT' ? 124 : _context22.t0 === 'PANEL_DISABLE_DOWNLOAD_BAR' ? 125 : _context22.t0 === 'PANEL_ENABLE_DOWNLOAD_BAR' ? 127 : _context22.t0 === 'PANEL_GET_VIEWPORT_RECT_IN_SCREEN' ? 129 : _context22.t0 === 'PANEL_XCLICK_NEED_CALIBRATION' ? 130 : _context22.t0 === 'PANEL_CLOSE_CURRENT_TAB_AND_SWITCH_TO_LAST_PLAYED' ? 134 : _context22.t0 === 'PANEL_OPEN_IN_SIDEPANEL' ? 135 : _context22.t0 === 'CS_LOAD_URL' ? 135 : _context22.t0 === 'CS_STORE_SCREENSHOT_IN_SELECTION' ? 139 : _context22.t0 === 'CS_SCREEN_AREA_SELECTED' ? 142 : _context22.t0 === 'CS_DONE_INSPECTING' ? 146 : _context22.t0 === 'CS_ACTIVATE_ME' ? 153 : _context22.t0 === 'CS_RECORD_ADD_COMMAND' ? 164 : _context22.t0 === 'PANEL_CLOSE_OTHER_TABS' ? 180 : _context22.t0 === 'PANEL_CLOSE_CURRENT_TAB' ? 182 : _context22.t0 === 'PANEL_SELECT_WINDOW' ? 190 : _context22.t0 === 'CS_TIMEOUT_STATUS' ? 210 : _context22.t0 === 'CS_DELETE_ALL_COOKIES' ? 211 : _context22.t0 === 'CS_SET_FILE_INPUT_FILES' ? 213 : _context22.t0 === 'CS_ON_DOWNLOAD' ? 214 : _context22.t0 === 'CS_INVOKE' ? 216 : _context22.t0 === 'CS_IMPORT_AND_INVOKE' ? 217 : _context22.t0 === 'CS_ADD_LOG' ? 219 : _context22.t0 === 'CS_OPEN_PANEL_SETTINGS' ? 220 : _context22.t0 === 'DESKTOP_EDITOR_ADD_VISION_IMAGE' ? 222 : _context22.t0 === 'TIMEOUT' ? 223 : 224;
+          _context22.next = _context22.t0 === "I_AM_PANEL" ? 7 : _context22.t0 === "PANEL_CAPTURE_VISIBLE_TAB" ? 19 : _context22.t0 === "PANEL_SET_PROXY" ? 20 : _context22.t0 === "PANEL_GET_PROXY" ? 21 : _context22.t0 === "PANEL_TIME_FOR_BACKUP" ? 22 : _context22.t0 === "PANEL_LOG" ? 23 : _context22.t0 === "PANEL_CALL_PLAY_TAB" ? 24 : _context22.t0 === "PANEL_CS_IPC_READY" ? 26 : _context22.t0 === "PANEL_HAS_PENDING_DOWNLOAD" ? 28 : _context22.t0 === "PANEL_WAIT_FOR_ANY_DOWNLOAD" ? 29 : _context22.t0 === "PANEL_START_RECORDING" ? 30 : _context22.t0 === "PANEL_STOP_RECORDING" ? 41 : _context22.t0 === "PANEL_TRY_TO_RECORD_OPEN_COMMAND" ? 48 : _context22.t0 === "PANEL_START_INSPECTING" ? 51 : _context22.t0 === "PANEL_STOP_INSPECTING" ? 57 : _context22.t0 === "PANEL_START_PLAYING" ? 62 : _context22.t0 === "PANEL_HEART_BEAT" ? 72 : _context22.t0 === "PANEL_STOP_PLAYING" ? 73 : _context22.t0 === "PANEL_HIGHLIGHT_DOM" ? 80 : _context22.t0 === "PANEL_HIGHLIGHT_RECT" ? 81 : _context22.t0 === "PANEL_HIGHLIGHT_X" ? 82 : _context22.t0 === "PANEL_HIGHLIGHT_RECTS" ? 83 : _context22.t0 === "PANEL_HIGHLIGHT_DESKTOP_RECTS" ? 85 : _context22.t0 === "PANEL_HIGHLIGHT_DESKTOP_X" ? 86 : _context22.t0 === "PANEL_HIGHLIGHT_OCR_MATCHES" ? 87 : _context22.t0 === "PANEL_CLEAR_OCR_MATCHES_ON_PLAYING_PAGE" ? 92 : _context22.t0 === "PANEL_RESIZE_WINDOW" ? 93 : _context22.t0 === "PANEL_UPDATE_BADGE" ? 96 : _context22.t0 === "PANEL_NOTIFY_AUTO_PAUSE" ? 101 : _context22.t0 === "PANEL_NOTIFY_BREAKPOINT" ? 103 : _context22.t0 === "PANEL_NOTIFY_ECHO" ? 105 : _context22.t0 === "PANEL_CLOSE_ALL_WINDOWS" ? 107 : _context22.t0 === "PANEL_CURRENT_PLAY_TAB_INFO" ? 110 : _context22.t0 === "PANEL_MINIMIZE_ALL_WINDOWS_BUT_PANEL" ? 111 : _context22.t0 === "PANEL_MINIMIZE_ALL_WINDOWS" ? 114 : _context22.t0 === "PANEL_BRING_PANEL_TO_FOREGROUND" ? 115 : _context22.t0 === "PANEL_BRING_PLAYING_WINDOW_TO_FOREGROUND" ? 116 : _context22.t0 === "PANEL_RESIZE_PLAY_TAB" ? 117 : _context22.t0 === "PANEL_GET_WINDOW_SIZE_OF_PLAY_TAB" ? 118 : _context22.t0 === "PANEL_SELECT_AREA_ON_CURRENT_PAGE" ? 119 : _context22.t0 === "PANEL_CLEAR_VISION_RECTS_ON_PLAYING_PAGE" ? 120 : _context22.t0 === "PANEL_HIDE_VISION_HIGHLIGHT" ? 121 : _context22.t0 === "PANEL_SHOW_VISION_HIGHLIGHT" ? 122 : _context22.t0 === "PANEL_SCREENSHOT_PAGE_INFO" ? 123 : _context22.t0 === "PANEL_TOGGLE_HIGHLIGHT_VIEWPORT" ? 124 : _context22.t0 === "PANEL_DISABLE_DOWNLOAD_BAR" ? 125 : _context22.t0 === "PANEL_ENABLE_DOWNLOAD_BAR" ? 127 : _context22.t0 === "PANEL_GET_VIEWPORT_RECT_IN_SCREEN" ? 129 : _context22.t0 === "PANEL_XCLICK_NEED_CALIBRATION" ? 130 : _context22.t0 === "PANEL_CLOSE_CURRENT_TAB_AND_SWITCH_TO_LAST_PLAYED" ? 134 : _context22.t0 === "PANEL_OPEN_IN_SIDEPANEL" ? 135 : _context22.t0 === "CS_LOAD_URL" ? 135 : _context22.t0 === "CS_STORE_SCREENSHOT_IN_SELECTION" ? 139 : _context22.t0 === "CS_SCREEN_AREA_SELECTED" ? 142 : _context22.t0 === "CS_DONE_INSPECTING" ? 146 : _context22.t0 === "CS_ACTIVATE_ME" ? 153 : _context22.t0 === "CS_RECORD_ADD_COMMAND" ? 164 : _context22.t0 === "PANEL_CLOSE_OTHER_TABS" ? 180 : _context22.t0 === "PANEL_CLOSE_CURRENT_TAB" ? 182 : _context22.t0 === "PANEL_SELECT_WINDOW" ? 190 : _context22.t0 === "CS_TIMEOUT_STATUS" ? 210 : _context22.t0 === "CS_DELETE_ALL_COOKIES" ? 211 : _context22.t0 === "CS_SET_FILE_INPUT_FILES" ? 213 : _context22.t0 === "CS_ON_DOWNLOAD" ? 214 : _context22.t0 === "CS_INVOKE" ? 216 : _context22.t0 === "CS_IMPORT_AND_INVOKE" ? 217 : _context22.t0 === "CS_ADD_LOG" ? 219 : _context22.t0 === "CS_OPEN_PANEL_SETTINGS" ? 220 : _context22.t0 === "DESKTOP_EDITOR_ADD_VISION_IMAGE" ? 222 : _context22.t0 === "TIMEOUT" ? 223 : 224;
           break;
         case 7:
           _context22.next = 9;
@@ -22557,10 +22527,10 @@ var onRequest = /*#__PURE__*/function () {
           isSidePanel = ((_args$sender$tab = args.sender.tab) === null || _args$sender$tab === void 0 ? void 0 : _args$sender$tab.id) === _ipc_bg_cs.SIDEPANEL_TAB_ID || args.sender.url === "chrome-extension://".concat(_web_extension["default"].runtime.id, "/sidepanel.html") || args.sender.url.match(/moz-extension:\/\/[a-z0-9-]+\/sidepanel.html/);
           panelTabId = isSidePanel ? _ipc_bg_cs.SIDEPANEL_TAB_ID : args.sender.tab.id;
           _context22.next = 13;
-          return (0, _global_state.updateState)((0, _utils.setIn)(['tabIds', 'panel'], panelTabId));
+          return (0, _global_state.updateState)((0, _utils.setIn)(["tabIds", "panel"], panelTabId));
         case 13:
           if (!isSidePanel) {
-            (0, _global_state.updateState)((0, _utils.setIn)(['tabIds', 'lastPanelWindow'], panelTabId));
+            (0, _global_state.updateState)((0, _utils.setIn)(["tabIds", "lastPanelWindow"], panelTabId));
           }
           (0, _contextMenu.getContextMenuService)().destroyMenus();
 
@@ -22586,9 +22556,9 @@ var onRequest = /*#__PURE__*/function () {
           return _context22.abrupt("return", true);
         case 19:
           return _context22.abrupt("return", _web_extension["default"].tabs.captureVisibleTab(args.windowId, args.options)["catch"](function (e) {
-            console.log('captureVisibleTab e:>>', e);
+            console.log("captureVisibleTab e:>>", e);
             if (e == "Error: Missing activeTab permission") {
-              throw new Error('Error E144: Screenshot permission issue. To fix, please reload extension.' + 'To do so, go to extension settings and turn the blue switch OFF and then ON again.');
+              throw new Error("Error E144: Screenshot permission issue. To fix, please reload extension." + "To do so, go to extension settings and turn the blue switch OFF and then ON again.");
             }
             throw e;
           }));
@@ -22621,7 +22591,7 @@ var onRequest = /*#__PURE__*/function () {
             return true;
           }));
         case 30:
-          (0, _log["default"])('Start to record...');
+          (0, _log["default"])("Start to record...");
           _context22.next = 33;
           return (0, _global_state.updateState)({
             status: C.APP_STATUS.RECORDER
@@ -22630,26 +22600,26 @@ var onRequest = /*#__PURE__*/function () {
           setInspectorTabId(null, true);
           toggleRecordingBadge(true);
           menuInfos = [{
-            id: 'verifyText',
-            title: 'Verify Text',
-            contexts: ['page', 'selection']
+            id: "verifyText",
+            title: "Verify Text",
+            contexts: ["page", "selection"]
           }, {
-            id: 'verifyTitle',
-            title: 'Verify Title',
-            contexts: ['page', 'selection']
+            id: "verifyTitle",
+            title: "Verify Title",
+            contexts: ["page", "selection"]
           }, {
-            id: 'assertText',
-            title: 'Assert Text',
-            contexts: ['page', 'selection']
+            id: "assertText",
+            title: "Assert Text",
+            contexts: ["page", "selection"]
           }, {
-            id: 'assertTitle',
-            title: 'Assert Title',
-            contexts: ['page', 'selection']
+            id: "assertTitle",
+            title: "Assert Title",
+            contexts: ["page", "selection"]
           }].map(function (item) {
             return _objectSpread(_objectSpread({}, item), {}, {
               onclick: function onclick() {
                 getRecordTabIpc().then(function (ipc) {
-                  return ipc.ask('CONTEXT_MENU_IN_RECORDING', {
+                  return ipc.ask("CONTEXT_MENU_IN_RECORDING", {
                     command: item.id
                   });
                 });
@@ -22668,10 +22638,10 @@ var onRequest = /*#__PURE__*/function () {
           }
           return _context22.abrupt("return", true);
         case 41:
-          (0, _log["default"])('Stop recording...');
+          (0, _log["default"])("Stop recording...");
           (0, _contextMenu.getContextMenuService)().destroyMenus();
           getRecordTabIpc().then(function (ipc) {
-            ipc.ask('SET_STATUS', {
+            ipc.ask("SET_STATUS", {
               status: C.CONTENT_SCRIPT_STATUS.NORMAL
             });
           });
@@ -22694,19 +22664,19 @@ var onRequest = /*#__PURE__*/function () {
             _context22.next = 50;
             break;
           }
-          throw new Error('E215: Not in recorder mode');
+          throw new Error("E215: Not in recorder mode");
         case 50:
           return _context22.abrupt("return", (0, _tab.getPlayTab)().then( /*#__PURE__*/function () {
             var _ref22 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee13(tab) {
               return _regeneratorRuntime().wrap(function _callee13$(_context13) {
                 while (1) switch (_context13.prev = _context13.next) {
                   case 0:
-                    (0, _log["default"])('PANEL_TRY_TO_RECORD_OPEN_COMMAND', tab);
+                    (0, _log["default"])("PANEL_TRY_TO_RECORD_OPEN_COMMAND", tab);
                     if (/^(https?:|file:)/.test(tab.url)) {
                       _context13.next = 3;
                       break;
                     }
-                    throw new Error('E216: Not a valid url to record as open command');
+                    throw new Error("E216: Not a valid url to record as open command");
                   case 3:
                     _context13.next = 5;
                     return (0, _global_state.updateState)(function (state) {
@@ -22720,10 +22690,10 @@ var onRequest = /*#__PURE__*/function () {
                   case 5:
                     getPanelTabIpc().then(function (panelIpc) {
                       var command = {
-                        cmd: 'open',
+                        cmd: "open",
                         target: tab.url
                       };
-                      panelIpc.ask('RECORD_ADD_COMMAND', command);
+                      panelIpc.ask("RECORD_ADD_COMMAND", command);
                       notifyRecordCommand(command);
                     });
                     return _context13.abrupt("return", true);
@@ -22738,7 +22708,7 @@ var onRequest = /*#__PURE__*/function () {
             };
           }()));
         case 51:
-          (0, _log["default"])('start to inspect...');
+          (0, _log["default"])("start to inspect...");
           toggleInspectingBadge(true);
           if (state.tabIds.toPlay) {
             (0, _tab_utils.activateTab)(state.tabIds.toPlay, true);
@@ -22750,7 +22720,7 @@ var onRequest = /*#__PURE__*/function () {
         case 56:
           return _context22.abrupt("return", true);
         case 57:
-          (0, _log["default"])('start to inspect...');
+          (0, _log["default"])("start to inspect...");
           _context22.next = 60;
           return (0, _global_state.updateState)({
             status: C.APP_STATUS.NORMAL
@@ -22759,7 +22729,7 @@ var onRequest = /*#__PURE__*/function () {
           toggleInspectingBadge(false);
           return _context22.abrupt("return", setInspectorTabId(null, true));
         case 62:
-          (0, _log["default"])('start to play...');
+          (0, _log["default"])("start to play...");
           _context22.next = 65;
           return (0, _global_state.updateState)({
             status: C.APP_STATUS.PLAYER,
@@ -22767,7 +22737,7 @@ var onRequest = /*#__PURE__*/function () {
             xClickNeedCalibrationInfo: null
           });
         case 65:
-          _storage["default"].get('config').then( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee14() {
+          _storage["default"].get("config").then( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee14() {
             var config,
               state,
               _args14 = arguments;
@@ -22801,7 +22771,7 @@ var onRequest = /*#__PURE__*/function () {
           if (state.timer) clearInterval(state.timer);
           return _context22.abrupt("return", true);
         case 72:
-          return _context22.abrupt("return", (0, _global_state.getState)('heartBeatSecret').then(function () {
+          return _context22.abrupt("return", (0, _global_state.getState)("heartBeatSecret").then(function () {
             var secret = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
             return secret;
           }));
@@ -22822,7 +22792,7 @@ var onRequest = /*#__PURE__*/function () {
         case 75:
           // Note: let cs know that it should exit playing mode
           (0, _ipc_cache.getIpcCache)().get(state.tabIds.toPlay).then(function (ipc) {
-            return ipc.ask('SET_STATUS', {
+            return ipc.ask("SET_STATUS", {
               status: C.CONTENT_SCRIPT_STATUS.NORMAL
             }, C.CS_IPC_TIMEOUT);
           });
@@ -22836,20 +22806,20 @@ var onRequest = /*#__PURE__*/function () {
           return _context22.abrupt("return", Promise.all([getRecordTabIpc().then(function (ipc) {
             return {
               ipc: ipc,
-              type: 'record'
+              type: "record"
             };
           })["catch"](function () {
             return null;
           }), getPlayTabIpc().then(function (ipc) {
             return {
               ipc: ipc,
-              type: 'play'
+              type: "play"
             };
           })["catch"](function () {
             return null;
           })]).then(function (tuple) {
             if (!tuple[0] && !tuple[1]) {
-              throw new Error('E218: No where to look for the dom');
+              throw new Error("E218: No where to look for the dom");
             }
             return tuple.filter(function (x) {
               return !!x;
@@ -22858,7 +22828,7 @@ var onRequest = /*#__PURE__*/function () {
             return Promise.all(list.map(function (_ref24) {
               var ipc = _ref24.ipc,
                 type = _ref24.type;
-              return ipc.ask('FIND_DOM', {
+              return ipc.ask("FIND_DOM", {
                 locator: args.locator
               }).then(function (result) {
                 return {
@@ -22881,7 +22851,7 @@ var onRequest = /*#__PURE__*/function () {
                       _context15.next = 3;
                       break;
                     }
-                    throw new Error('E219: DOM not found');
+                    throw new Error("E219: DOM not found");
                   case 3:
                     item = foundedList.length === 2 ? foundedList.find(function (item) {
                       return item.type === args.lastOperation;
@@ -22890,9 +22860,9 @@ var onRequest = /*#__PURE__*/function () {
                     return (0, _global_state.getState)();
                   case 6:
                     state = _context15.sent;
-                    tabId = state.tabIds[item.type === 'record' ? 'lastRecord' : 'toPlay'];
+                    tabId = state.tabIds[item.type === "record" ? "lastRecord" : "toPlay"];
                     return _context15.abrupt("return", (0, _tab_utils.activateTab)(tabId, true).then(function () {
-                      return item.ipc.ask('HIGHLIGHT_DOM', {
+                      return item.ipc.ask("HIGHLIGHT_DOM", {
                         locator: args.locator,
                         cmd: args.cmd
                       });
@@ -22909,16 +22879,16 @@ var onRequest = /*#__PURE__*/function () {
           }()));
         case 81:
           return _context22.abrupt("return", getPlayTabIpc().then(function (ipc) {
-            return ipc.ask('HIGHLIGHT_RECT', args, C.CS_IPC_TIMEOUT);
+            return ipc.ask("HIGHLIGHT_RECT", args, C.CS_IPC_TIMEOUT);
           }));
         case 82:
           return _context22.abrupt("return", getPlayTabIpc().then(function (ipc) {
-            return ipc.ask('HIGHLIGHT_X', args, C.CS_IPC_TIMEOUT);
+            return ipc.ask("HIGHLIGHT_X", args, C.CS_IPC_TIMEOUT);
           }));
         case 83:
-          console.log('PANEL_HIGHLIGHT_RECTS:>>', args);
+          console.log("PANEL_HIGHLIGHT_RECTS:>>", args);
           return _context22.abrupt("return", getPlayTabIpc().then(function (ipc) {
-            return ipc.ask('HIGHLIGHT_RECTS', args, C.CS_IPC_TIMEOUT);
+            return ipc.ask("HIGHLIGHT_RECTS", args, C.CS_IPC_TIMEOUT);
           }));
         case 85:
           return _context22.abrupt("return", (0, _service.runInDesktopScreenshotEditor)(args.screenAvailableSize, {
@@ -22949,28 +22919,28 @@ var onRequest = /*#__PURE__*/function () {
                 ocrMatches: args.ocrMatches,
                 image: {
                   source: source,
-                  path: (0, _utils.ensureExtName)('.png', C.LAST_DESKTOP_SCREENSHOT_FILE_NAME)
+                  path: (0, _utils.ensureExtName)(".png", C.LAST_DESKTOP_SCREENSHOT_FILE_NAME)
                 }
               }
             });
           }));
         case 91:
           return _context22.abrupt("return", getPlayTabIpc().then(function (ipc) {
-            return ipc.ask('HIGHLIGHT_OCR_MATCHES', args, C.CS_IPC_TIMEOUT);
+            return ipc.ask("HIGHLIGHT_OCR_MATCHES", args, C.CS_IPC_TIMEOUT);
           }));
         case 92:
           return _context22.abrupt("return", getPlayTabIpc().then(function (ipc) {
-            return Promise.all([ipc.ask('CLEAR_VISION_RECTS', {}, C.CS_IPC_TIMEOUT), ipc.ask('CLEAR_OCR_MATCHES', {}, C.CS_IPC_TIMEOUT)]);
+            return Promise.all([ipc.ask("CLEAR_VISION_RECTS", {}, C.CS_IPC_TIMEOUT), ipc.ask("CLEAR_OCR_MATCHES", {}, C.CS_IPC_TIMEOUT)]);
           }));
         case 93:
           if (state.tabIds.panel) {
             _context22.next = 95;
             break;
           }
-          throw new Error('E220: Panel not available');
+          throw new Error("E220: Panel not available");
         case 95:
           return _context22.abrupt("return", _web_extension["default"].tabs.get(state.tabIds.panel).then(function (tab) {
-            return _web_extension["default"].windows.update(tab.windowId, (0, _utils.pick)(['width', 'height'], _objectSpread(_objectSpread({}, args.size), {}, {
+            return _web_extension["default"].windows.update(tab.windowId, (0, _utils.pick)(["width", "height"], _objectSpread(_objectSpread({}, args.size), {}, {
               width: args.size.width,
               height: args.size.height
             })));
@@ -23005,7 +22975,7 @@ var onRequest = /*#__PURE__*/function () {
           });
         case 109:
           return _context22.abrupt("return", logKantuClosing()["catch"](function (e) {
-            _log["default"].warn('E222: Error in log => RPA closing: ', e.message);
+            _log["default"].warn("E222: Error in log => RPA closing: ", e.message);
           }).then(function () {
             closeAllWindows();
             return true;
@@ -23029,7 +22999,7 @@ var onRequest = /*#__PURE__*/function () {
             });
             return Promise.all(list.map(function (win) {
               return _web_extension["default"].windows.update(win.id, {
-                state: 'minimized'
+                state: "minimized"
               });
             }));
           }).then(function () {
@@ -23041,7 +23011,7 @@ var onRequest = /*#__PURE__*/function () {
           return _context22.abrupt("return", _web_extension["default"].windows.getAll().then(function (wins) {
             return Promise.all(wins.map(function (win) {
               return _web_extension["default"].windows.update(win.id, {
-                state: 'minimized'
+                state: "minimized"
               });
             })).then(function () {
               return (0, _utils.delay)(function () {
@@ -23067,36 +23037,36 @@ var onRequest = /*#__PURE__*/function () {
           }));
         case 118:
           return _context22.abrupt("return", (0, _tab.getPlayTab)().then(function (tab) {
-            console.log('PANEL_GET_WINDOW_SIZE_OF_PLAY_TAB tab:>> ', tab);
+            console.log("PANEL_GET_WINDOW_SIZE_OF_PLAY_TAB tab:>> ", tab);
             return (0, _resize_window.getWindowSize)(tab.windowId);
           }));
         case 119:
           return _context22.abrupt("return", getPlayTabIpc().then(function (ipc) {
             (0, _tab_utils.activateTab)(state.tabIds.toPlay, true);
-            return ipc.ask('SELECT_SCREEN_AREA');
+            return ipc.ask("SELECT_SCREEN_AREA");
           })["catch"](function (e) {
             _log["default"].error(e.stack);
-            throw new Error('E205: Not able to take screenshot on the current tab');
+            throw new Error("E205: Not able to take screenshot on the current tab");
           }));
         case 120:
           return _context22.abrupt("return", getPlayTabIpc().then(function (ipc) {
-            return Promise.all([ipc.ask('CLEAR_VISION_RECTS', {}, C.CS_IPC_TIMEOUT), ipc.ask('CLEAR_OCR_MATCHES', {}, C.CS_IPC_TIMEOUT)]);
+            return Promise.all([ipc.ask("CLEAR_VISION_RECTS", {}, C.CS_IPC_TIMEOUT), ipc.ask("CLEAR_OCR_MATCHES", {}, C.CS_IPC_TIMEOUT)]);
           }));
         case 121:
           return _context22.abrupt("return", getPlayTabIpc().then(function (ipc) {
-            return ipc.ask('HIDE_VISION_RECTS', {}, C.CS_IPC_TIMEOUT);
+            return ipc.ask("HIDE_VISION_RECTS", {}, C.CS_IPC_TIMEOUT);
           }));
         case 122:
           return _context22.abrupt("return", getPlayTabIpc().then(function (ipc) {
-            return ipc.ask('SHOW_VISION_RECTS', {}, C.CS_IPC_TIMEOUT);
+            return ipc.ask("SHOW_VISION_RECTS", {}, C.CS_IPC_TIMEOUT);
           }));
         case 123:
           return _context22.abrupt("return", getPlayTabIpc().then(function (ipc) {
-            return ipc.ask('SCREENSHOT_PAGE_INFO', {}, C.CS_IPC_TIMEOUT);
+            return ipc.ask("SCREENSHOT_PAGE_INFO", {}, C.CS_IPC_TIMEOUT);
           }));
         case 124:
           return _context22.abrupt("return", getPlayTabIpc().then(function (ipc) {
-            return ipc.ask('TOGGLE_HIGHLIGHT_VIEWPORT', args, C.CS_IPC_TIMEOUT);
+            return ipc.ask("TOGGLE_HIGHLIGHT_VIEWPORT", args, C.CS_IPC_TIMEOUT);
           }));
         case 125:
           // Ext.downloads.setShelfEnabled(false)
@@ -23122,7 +23092,7 @@ var onRequest = /*#__PURE__*/function () {
               ipc = _ref29[0],
               zoom = _ref29[1];
             return getPlayTabIpc().then(function (ipc) {
-              return ipc.ask('GET_VIEWPORT_RECT_IN_SCREEN', {
+              return ipc.ask("GET_VIEWPORT_RECT_IN_SCREEN", {
                 zoom: zoom
               });
             });
@@ -23140,13 +23110,13 @@ var onRequest = /*#__PURE__*/function () {
             };
           };
           isWindowInfoEqual = function isWindowInfoEqual(a, b) {
-            return _utils.and.apply(void 0, _toConsumableArray('id, top, left, width, height, activeTabId'.split(/,\s*/g).map(function (key) {
+            return _utils.and.apply(void 0, _toConsumableArray("id, top, left, width, height, activeTabId".split(/,\s*/g).map(function (key) {
               return a[key] === b[key];
             })));
           }; // Note: we take every request as it will do calibration
           // and next request should get `false` (no need for more calibration, unless there are window change or window resize)
           return _context22.abrupt("return", (0, _tab.getPlayTab)().then(function (tab) {
-            if (!tab) throw new Error('E206: no play tab found for calibration');
+            if (!tab) throw new Error("E206: no play tab found for calibration");
             return _web_extension["default"].windows.get(tab.windowId).then( /*#__PURE__*/function () {
               var _ref30 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee16(win) {
                 var winInfo;
@@ -23154,7 +23124,7 @@ var onRequest = /*#__PURE__*/function () {
                   while (1) switch (_context16.prev = _context16.next) {
                     case 0:
                       winInfo = getWindowInfo(win, tab.id);
-                      (0, _log["default"])('CALIBRATION NEED???', last, winInfo);
+                      (0, _log["default"])("CALIBRATION NEED???", last, winInfo);
 
                       // Note: cache last value
                       _context16.next = 4;
@@ -23267,7 +23237,7 @@ var onRequest = /*#__PURE__*/function () {
           rect = args.rect, devicePixelRatio = args.devicePixelRatio, fileName = args.fileName;
           _tabId2 = args.sender.tab.id;
           return _context22.abrupt("return", getPanelTabIpc().then(function (ipc) {
-            return ipc.ask('STORE_SCREENSHOT_IN_SELECTION', {
+            return ipc.ask("STORE_SCREENSHOT_IN_SELECTION", {
               rect: rect,
               tabId: _tabId2,
               fileName: fileName,
@@ -23277,9 +23247,9 @@ var onRequest = /*#__PURE__*/function () {
         case 142:
           _rect = args.rect, _devicePixelRatio = args.devicePixelRatio;
           _tabId3 = args.sender.tab.id;
-          (0, _log["default"])('CS_SCREEN_AREA_SELECTED', _rect, _devicePixelRatio, _tabId3);
+          (0, _log["default"])("CS_SCREEN_AREA_SELECTED", _rect, _devicePixelRatio, _tabId3);
           return _context22.abrupt("return", getPanelTabIpc().then(function (ipc) {
-            return ipc.ask('SCREEN_AREA_SELECTED', {
+            return ipc.ask("SCREEN_AREA_SELECTED", {
               rect: _rect,
               tabId: _tabId3,
               devicePixelRatio: _devicePixelRatio
@@ -23290,7 +23260,7 @@ var onRequest = /*#__PURE__*/function () {
             });
           }));
         case 146:
-          (0, _log["default"])('done inspecting...');
+          (0, _log["default"])("done inspecting...");
           _context22.next = 149;
           return (0, _global_state.updateState)({
             status: C.APP_STATUS.NORMAL
@@ -23300,7 +23270,7 @@ var onRequest = /*#__PURE__*/function () {
           setInspectorTabId(null, true, true);
           (0, _tab_utils.activateTab)(state.tabIds.panel, true);
           return _context22.abrupt("return", getPanelTabIpc().then(function (panelIpc) {
-            return panelIpc.ask('INSPECT_RESULT', args);
+            return panelIpc.ask("INSPECT_RESULT", args);
           }));
         case 153:
           _context22.t1 = state.status;
@@ -23313,11 +23283,11 @@ var onRequest = /*#__PURE__*/function () {
           }
           _tabId4 = args.sender.tab.id;
           _context22.next = 160;
-          return (0, _global_state.updateState)((0, _utils.setIn)(['tabIds', 'toInspect'], _tabId4));
+          return (0, _global_state.updateState)((0, _utils.setIn)(["tabIds", "toInspect"], _tabId4));
         case 160:
           setTimeout(function () {
             (0, _ipc_cache.getIpcCache)().get(_tabId4).then(function (ipc) {
-              return ipc.ask('SET_STATUS', {
+              return ipc.ask("SET_STATUS", {
                 status: C.CONTENT_SCRIPT_STATUS.INSPECTING
               });
             });
@@ -23357,7 +23327,7 @@ var onRequest = /*#__PURE__*/function () {
           }
           return _context22.abrupt("return", false);
         case 174:
-          if (!(args.cmd === 'pullback')) {
+          if (!(args.cmd === "pullback")) {
             _context22.next = 178;
             break;
           }
@@ -23373,7 +23343,7 @@ var onRequest = /*#__PURE__*/function () {
         case 178:
           setTimeout(function () {
             (0, _ipc_cache.getIpcCache)().get(state.tabIds.toRecord).then(function (ipc) {
-              return ipc.ask('SET_STATUS', {
+              return ipc.ask("SET_STATUS", {
                 status: C.CONTENT_SCRIPT_STATUS.RECORDING
               });
             });
@@ -23387,8 +23357,8 @@ var onRequest = /*#__PURE__*/function () {
                 while (1) switch (_context18.prev = _context18.next) {
                   case 0:
                     if (isFirst) {
-                      panelIpc.ask('RECORD_ADD_COMMAND', {
-                        cmd: 'open',
+                      panelIpc.ask("RECORD_ADD_COMMAND", {
+                        cmd: "open",
                         target: args.url
                       });
                     }
@@ -23402,13 +23372,13 @@ var onRequest = /*#__PURE__*/function () {
                       _context18.next = 8;
                       break;
                     }
-                    args.cmd = args.cmd.replace('AndWait', '');
+                    args.cmd = args.cmd.replace("AndWait", "");
                     _context18.next = 8;
                     return (0, _global_state.updateState)({
                       pullback: false
                     });
                   case 8:
-                    return _context18.abrupt("return", panelIpc.ask('RECORD_ADD_COMMAND', args));
+                    return _context18.abrupt("return", panelIpc.ask("RECORD_ADD_COMMAND", args));
                   case 9:
                   case "end":
                     return _context18.stop();
@@ -23419,7 +23389,7 @@ var onRequest = /*#__PURE__*/function () {
               return _ref32.apply(this, arguments);
             };
           }()).then(function () {
-            return Promise.all([_storage["default"].get('config'), (0, _global_state.getState)()]);
+            return Promise.all([_storage["default"].get("config"), (0, _global_state.getState)()]);
           }).then(function (_ref33) {
             var _ref34 = _slicedToArray(_ref33, 2),
               config = _ref34[0],
@@ -23472,14 +23442,14 @@ var onRequest = /*#__PURE__*/function () {
             var minimize = function minimize() {
               return getPanelWinId().then(function (winId) {
                 return _web_extension["default"].windows.update(winId, {
-                  state: 'minimized'
+                  state: "minimized"
                 });
               });
             };
             var restore = function restore() {
               return getPanelWinId().then(function (winId) {
                 return _web_extension["default"].windows.update(winId, {
-                  state: 'normal'
+                  state: "normal"
                 });
               });
             };
@@ -23525,13 +23495,13 @@ var onRequest = /*#__PURE__*/function () {
           };
           runWithTab = function runWithTab(pTab) {
             return pTab.then(function (tab) {
-              (0, _log["default"])('getCurrentTab - ', tab);
+              (0, _log["default"])("getCurrentTab - ", tab);
               var isValidTab = !!tab && !!tab.id;
               var isPanelTab = isValidTab && tab.id === state.tabIds.panel;
-              return (0, _global_state.updateState)((0, _utils.setIn)(['tabIds', 'toPlay'], isValidTab && !isPanelTab ? tab.id : null));
+              return (0, _global_state.updateState)((0, _utils.setIn)(["tabIds", "toPlay"], isValidTab && !isPanelTab ? tab.id : null));
             })["catch"](function () {}).then(function () {
               // Note: should always reset pendingPlayingTab, no matter there is an error or not
-              (0, _log["default"])('resetting pendingPlayingTab');
+              (0, _log["default"])("resetting pendingPlayingTab");
               return (0, _global_state.updateState)({
                 pendingPlayingTab: false
               });
@@ -23542,7 +23512,7 @@ var onRequest = /*#__PURE__*/function () {
           }));
         case 190:
           oldTablId = state.tabIds.toPlay;
-          _splitIntoTwo = (0, _utils.splitIntoTwo)('=', args.target), _splitIntoTwo2 = _slicedToArray(_splitIntoTwo, 2), type = _splitIntoTwo2[0], locator = _splitIntoTwo2[1];
+          _splitIntoTwo = (0, _utils.splitIntoTwo)("=", args.target), _splitIntoTwo2 = _slicedToArray(_splitIntoTwo, 2), type = _splitIntoTwo2[0], locator = _splitIntoTwo2[1];
           if (locator) {
             _context22.next = 194;
             break;
@@ -23550,7 +23520,7 @@ var onRequest = /*#__PURE__*/function () {
           throw new Error("E207: invalid window locator, '".concat(args.target, "'"));
         case 194:
           _context22.t2 = type.toLowerCase();
-          _context22.next = _context22.t2 === 'title' ? 197 : _context22.t2 === 'tab' ? 199 : 208;
+          _context22.next = _context22.t2 === "title" ? 197 : _context22.t2 === "tab" ? 199 : 208;
           break;
         case 197:
           pGetTabs = _web_extension["default"].tabs.query({
@@ -23597,7 +23567,7 @@ var onRequest = /*#__PURE__*/function () {
             }
             return tabs[0];
           }).then(function (tab) {
-            (0, _log["default"])('selectWindow, got tab', tab);
+            (0, _log["default"])("selectWindow, got tab", tab);
             return (0, _ipc_cache.getIpcCache)().domReadyGet(tab.id, 30000)["catch"](function (e) {
               // args.target = 'tab=open' is a valid value, so this is commented out.
               // if (/tab=\s*open\s*/i.test(args.target)) {
@@ -23605,14 +23575,14 @@ var onRequest = /*#__PURE__*/function () {
               // }
               throw new Error("E225: DOM failed to be ready in 30sec.");
             }).then(function (ipc) {
-              (0, _log["default"])('selectWindow, got ipc', ipc);
+              (0, _log["default"])("selectWindow, got ipc", ipc);
               var domReadyTimeout = 20000;
-              return ipc.ask('DOM_READY', {}, domReadyTimeout)["catch"](function (e) {
+              return ipc.ask("DOM_READY", {}, domReadyTimeout)["catch"](function (e) {
                 _log["default"].error(e);
-                // most likely, ipc is not running properly in this tab     
+                // most likely, ipc is not running properly in this tab
                 throw new Error("E226: DOM failed to be ready in ".concat(domReadyTimeout, " ms'"));
               }).then(function () {
-                ipc.ask('SET_STATUS', {
+                ipc.ask("SET_STATUS", {
                   status: C.CONTENT_SCRIPT_STATUS.PLAYING
                 });
                 return true;
@@ -23623,9 +23593,9 @@ var onRequest = /*#__PURE__*/function () {
             }).then(function () {
               // Note: set the original tab to NORMAL status
               // only if the new tab is set to PLAYING status
-              (0, _log["default"])('selectWindow, set orignial to normal');
+              (0, _log["default"])("selectWindow, set orignial to normal");
               (0, _ipc_cache.getIpcCache)().get(oldTablId).then(function (ipc) {
-                return ipc.ask('SET_STATUS', {
+                return ipc.ask("SET_STATUS", {
                   status: C.CONTENT_SCRIPT_STATUS.NORMAL
                 });
               });
@@ -23651,7 +23621,7 @@ var onRequest = /*#__PURE__*/function () {
               }, _callee19);
             })));
           })["catch"](function (e) {
-            if (e.message.includes('DOM failed to be ready in')) {
+            if (e.message.includes("DOM failed to be ready in")) {
               throw e;
             }
             //new Error(`failed to find the tab with locator '${args.target}'`)
@@ -23672,9 +23642,9 @@ var onRequest = /*#__PURE__*/function () {
                         }
                         return _context20.abrupt("return", false);
                       case 2:
-                        (0, _log["default"])('in initPlayTab, set toPlay to', tabs[0]);
+                        (0, _log["default"])("in initPlayTab, set toPlay to", tabs[0]);
                         ctab = tabs.filter(function (r) {
-                          return r.active === true && r.url.indexOf('chrome-extension://') == -1;
+                          return r.active === true && r.url.indexOf("chrome-extension://") == -1;
                         });
                         offset = parseInt(locator, 10);
                         _context20.next = 7;
@@ -23715,7 +23685,7 @@ var onRequest = /*#__PURE__*/function () {
           }));
         case 210:
           return _context22.abrupt("return", getPanelTabIpc().then(function (ipc) {
-            return ipc.ask('TIMEOUT_STATUS', args);
+            return ipc.ask("TIMEOUT_STATUS", args);
           }));
         case 211:
           _url = args.url;
@@ -23733,7 +23703,7 @@ var onRequest = /*#__PURE__*/function () {
         case 213:
           return _context22.abrupt("return", chrome.extension.isAllowedFileSchemeAccess().then(function (isAllowed) {
             if (!isAllowed) {
-              throw new Error('E510: Please allow access to file urls');
+              throw new Error("E510: Please allow access to file urls");
             }
           })["catch"](function (e) {
             throw e;
@@ -23752,7 +23722,7 @@ var onRequest = /*#__PURE__*/function () {
           });
           return _context22.abrupt("return", true);
         case 216:
-          return _context22.abrupt("return", _storage["default"].get('config').then( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee21() {
+          return _context22.abrupt("return", _storage["default"].get("config").then( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee21() {
             var config,
               state,
               tabId,
@@ -23782,7 +23752,7 @@ var onRequest = /*#__PURE__*/function () {
                   _context21.next = 12;
                   break;
                 case 11:
-                  _context21.t0 = '';
+                  _context21.t0 = "";
                 case 12:
                   wTab = _context21.t0;
                   if (!(wTab != "")) {
@@ -23812,14 +23782,14 @@ var onRequest = /*#__PURE__*/function () {
                 case 23:
                   from = args.testCase && args.testCase.from || args.testSuite && args.testSuite.from;
                   _context21.t2 = from;
-                  _context21.next = _context21.t2 === 'bookmark' ? 27 : _context21.t2 === 'html' ? 30 : 37;
+                  _context21.next = _context21.t2 === "bookmark" ? 27 : _context21.t2 === "html" ? 30 : 37;
                   break;
                 case 27:
                   if (config.allowRunFromBookmark) {
                     _context21.next = 29;
                     break;
                   }
-                  throw new Error('[Message from RPA] Error E103: To run a macro or a test suite from bookmarks, you need to allow it in the Ui.Vision settings first');
+                  throw new Error("[Message from RPA] Error E103: To run a macro or a test suite from bookmarks, you need to allow it in the Ui.Vision settings first");
                 case 29:
                   return _context21.abrupt("break", 38);
                 case 30:
@@ -23829,17 +23799,17 @@ var onRequest = /*#__PURE__*/function () {
                     _context21.next = 34;
                     break;
                   }
-                  throw new Error('Error #103: To run test suite from local file, enable it in Ui.Vision settings first');
+                  throw new Error("Error #103: To run test suite from local file, enable it in Ui.Vision settings first");
                 case 34:
                   if (!(isHttpSchema && !config.allowRunFromHttpSchema)) {
                     _context21.next = 36;
                     break;
                   }
-                  throw new Error('Error #104: To run test suite from public website, enable it in Ui.Vision settings first');
+                  throw new Error("Error #104: To run test suite from public website, enable it in Ui.Vision settings first");
                 case 36:
                   return _context21.abrupt("break", 38);
                 case 37:
-                  throw new Error('E212: unknown source not allowed');
+                  throw new Error("E212: unknown source not allowed");
                 case 38:
                   return _context21.abrupt("return", (0, _tab.withPanelIpc)({
                     params: {
@@ -23849,13 +23819,13 @@ var onRequest = /*#__PURE__*/function () {
                     // in case of side panel
                     if (!panelIpc) return false;
                     if (args.testCase) {
-                      return panelIpc.ask('RUN_TEST_CASE', {
+                      return panelIpc.ask("RUN_TEST_CASE", {
                         testCase: args.testCase,
                         options: args.options
                       });
                     }
                     if (args.testSuite) {
-                      return panelIpc.ask('RUN_TEST_SUITE', {
+                      return panelIpc.ask("RUN_TEST_SUITE", {
                         testSuite: args.testSuite,
                         options: args.options
                       });
@@ -23870,27 +23840,27 @@ var onRequest = /*#__PURE__*/function () {
           }))));
         case 217:
           from = args.from;
-          return _context22.abrupt("return", _storage["default"].get('config').then(function () {
+          return _context22.abrupt("return", _storage["default"].get("config").then(function () {
             var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
             var isFileSchema = /^file:\/\//.test(args.sender.url);
             var isHttpSchema = /^https?:\/\//.test(args.sender.url);
             if (isFileSchema && !config.allowRunFromFileSchema) {
-              throw new Error('Error #105: To run macro from local file, enable it in RPA settings first');
+              throw new Error("Error #105: To run macro from local file, enable it in RPA settings first");
             }
             if (isHttpSchema && !config.allowRunFromHttpSchema) {
-              throw new Error('Error #105: To run macro from public website, enable it in the RPA settings first');
+              throw new Error("Error #105: To run macro from public website, enable it in the RPA settings first");
             }
             return (0, _tab.withPanelIpc)({
               params: {
                 from: from
               }
             }).then(function (panelIpc) {
-              return panelIpc.ask('IMPORT_AND_RUN', args);
+              return panelIpc.ask("IMPORT_AND_RUN", args);
             });
           }));
         case 219:
           return _context22.abrupt("return", getPanelTabIpc().then(function (ipc) {
-            return ipc.ask('ADD_LOG', args);
+            return ipc.ask("ADD_LOG", args);
           }));
         case 220:
           (0, _tab.withPanelIpc)({
@@ -23898,14 +23868,14 @@ var onRequest = /*#__PURE__*/function () {
               settings: true
             }
           }).then(function (ipc) {
-            return ipc.ask('OPEN_SETTINGS');
+            return ipc.ask("OPEN_SETTINGS");
           })["catch"](function (e) {
             console.error(e);
           });
           return _context22.abrupt("return", true);
         case 222:
           return _context22.abrupt("return", (0, _tab.withPanelIpc)().then(function (ipc) {
-            return ipc.ask('ADD_VISION_IMAGE', {
+            return ipc.ask("ADD_VISION_IMAGE", {
               dataUrl: args.dataUrl,
               requireRename: true
             });
@@ -23915,7 +23885,7 @@ var onRequest = /*#__PURE__*/function () {
             return args.id;
           }, args.timeout));
         case 224:
-          return _context22.abrupt("return", 'unknown');
+          return _context22.abrupt("return", "unknown");
         case 225:
         case "end":
           return _context22.stop();
@@ -23963,7 +23933,7 @@ var initIPC = /*#__PURE__*/function () {
                       _context23.next = 6;
                       break;
                     }
-                    (0, _log["default"])('connect cs/sp ipc: tabId, cuid, ipc:>> ', tabId, cuid, ipc);
+                    (0, _log["default"])("connect cs/sp ipc: tabId, cuid, ipc:>> ", tabId, cuid, ipc);
                     (0, _ipc_cache.getIpcCache)().set(tabId, ipc, cuid);
                     ipc.onAsk(onRequest);
                   case 6:
@@ -23987,17 +23957,17 @@ var initIPC = /*#__PURE__*/function () {
   };
 }();
 var initOnInstalled = function initOnInstalled() {
-  if (typeof process !== 'undefined' && "production" === 'production') {
+  if (typeof process !== "undefined" && "production" === "production") {
     _web_extension["default"].runtime.setUninstallURL(_config["default"].urlAfterUninstall);
     chrome.runtime.onInstalled.addListener(function (_ref40) {
       var reason = _ref40.reason,
         previousVersion = _ref40.previousVersion;
       // * Why doesn't it fire in firefox?
       switch (reason) {
-        case 'install':
+        case "install":
           {
-            _storage["default"].get('config').then(function (config) {
-              return _storage["default"].set('config', _objectSpread(_objectSpread({}, config), {}, {
+            _storage["default"].get("config").then(function (config) {
+              return _storage["default"].set("config", _objectSpread(_objectSpread({}, config), {}, {
                 showTestCaseTab: false
               }));
             });
@@ -24005,16 +23975,16 @@ var initOnInstalled = function initOnInstalled() {
               url: _config["default"].urlAfterInstall
             });
           }
-        case 'update':
+        case "update":
           {
             _web_extension["default"].action.setBadgeText({
-              text: 'NEW'
+              text: "NEW"
             });
             _web_extension["default"].action.setBadgeBackgroundColor({
-              color: '#4444FF'
+              color: "#4444FF"
             });
             return _web_extension["default"].storage.local.set({
-              upgrade_not_viewed: 'not_viewed'
+              upgrade_not_viewed: "not_viewed"
             });
           }
       }
@@ -24030,7 +24000,7 @@ var initPlayTab = function initPlayTab() {
     var _ref42 = _slicedToArray(_ref41, 2),
       window = _ref42[0],
       state = _ref42[1];
-    // *** this line has been fixed. Look for any unintended side effects ***    
+    // *** this line has been fixed. Look for any unintended side effects ***
     // console.log('state:>> ', state)
     // console.log('window:>> ', window)
     if (state.status !== C.APP_STATUS.NORMAL) {
@@ -24056,7 +24026,7 @@ var initPlayTab = function initPlayTab() {
               }
               return _context25.abrupt("return", false);
             case 4:
-              (0, _log["default"])('in initPlayTab, set toPlay to', tabs[0]);
+              (0, _log["default"])("in initPlayTab, set toPlay to", tabs[0]);
               _context25.next = 7;
               return (0, _global_state.updateState)(function (state) {
                 return _objectSpread(_objectSpread({}, state), {}, {
@@ -24084,14 +24054,14 @@ var initPlayTab = function initPlayTab() {
 var initDownloadMan = function initDownloadMan() {
   (0, _download_man.getDownloadMan)().onCountDown(function (data) {
     getPanelTabIpc().then(function (panelIpc) {
-      panelIpc.ask('TIMEOUT_STATUS', _objectSpread(_objectSpread({}, data), {}, {
-        type: 'download'
+      panelIpc.ask("TIMEOUT_STATUS", _objectSpread(_objectSpread({}, data), {}, {
+        type: "download"
       }));
     });
   });
   (0, _download_man.getDownloadMan)().onDownloadComplete(function (downloadItem) {
     getPanelTabIpc().then(function (panelIpc) {
-      panelIpc.ask('DOWNLOAD_COMPLETE', downloadItem);
+      panelIpc.ask("DOWNLOAD_COMPLETE", downloadItem);
     });
   });
 };
@@ -24112,7 +24082,7 @@ var initProxyMan = function initProxyMan() {
             state = _context26.sent;
             if (state.tabIds.panel) {
               getPanelTabIpc().then(function (ipc) {
-                return ipc.ask('PROXY_UPDATE', {
+                return ipc.ask("PROXY_UPDATE", {
                   proxy: newProxy
                 });
               })["catch"](function (e) {
@@ -24132,6 +24102,7 @@ var initProxyMan = function initProxyMan() {
   (0, _proxy.getProxyManager)().getProxy().then(onProxyChange);
   (0, _proxy.getProxyManager)().onChange(onProxyChange);
 };
+console.log("✅ bg.js loaded - starting initialization...");
 bindEvents();
 initIPC();
 initOnInstalled();
@@ -24139,11 +24110,21 @@ initPlayTab();
 initDownloadMan();
 initProxyMan();
 (0, _contextMenu.getContextMenuService)().destroyMenus();
+console.log("✅ bg.js basic init completed");
 self.clip = _clipboard["default"];
 
-// Initialize Supabase Realtime Bridge
-__webpack_require__.e(/* import() */ 34).then(__webpack_require__.t.bind(__webpack_require__, 52034, 23))["catch"](function (e) {
-  console.error('❌ Failed to initialize Supabase:', e);
+// Initialize Supabase Worker Client on Service Worker startup
+console.log("🚀 bg.js: Initializing Supabase Worker on startup...");
+__webpack_require__.e(/* import() */ 826).then(__webpack_require__.bind(__webpack_require__, 99826)).then(function (_ref45) {
+  var initSupabaseWorker = _ref45.initSupabaseWorker;
+  console.log("📦 Supabase Worker module loaded");
+  initSupabaseWorker({
+    supabaseUrl: "https://rootomzbucovwdqsscqd.supabase.co",
+    supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJvb3RvbXpidWNvdndkcXNzY3FkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzU4OTE4ODMsImV4cCI6MjA1MTQ2Nzg4M30.fYKOe-HPh4WUdvBhEJxakLWCMQBp4E90EDwARk7ucf8",
+    pollingIntervalMs: 3000
+  });
+})["catch"](function (error) {
+  console.error("❌ Failed to load Supabase Worker module:", error);
 });
 })();
 

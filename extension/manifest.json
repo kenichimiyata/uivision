@@ -23,14 +23,8 @@
 
   "web_accessible_resources": [
     {
-      "resources": [
-        "content_script.js",
-        "inject.js",
-        "logo.png"
-      ],
-      "matches": [
-        "<all_urls>"
-      ],
+      "resources": ["content_script.js", "inject.js", "logo.png"],
+      "matches": ["<all_urls>"],
       "extension_ids": []
     }
   ],
@@ -73,15 +67,9 @@
     "sidePanel",
     "scripting"
   ],
-  "host_permissions": [
-    "<all_urls>"
-  ],
-  
+  "host_permissions": ["<all_urls>"],
+
   "content_security_policy": {
-     "extension_pages": "script-src 'self' 'wasm-unsafe-eval';"
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval';"
   }
 }
-
-
-
-
